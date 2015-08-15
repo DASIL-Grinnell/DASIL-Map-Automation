@@ -1,0 +1,135 @@
+
+#title {
+    font-family: Franklin Gothic Medium, UnDotum, Helvetica, Arial;
+    font-weight: normal;
+    font-size: 20px;
+}
+
+.entry-content {
+   font-size: 20px;
+   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+   display: inline-block;
+   vertical-align: top;
+}
+
+
+#side_panel {
+    margin: 0px 20px 20px 0px;
+    width: 240px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+#main-title {
+   font-family: "Roboto Condensed", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+   font-size: 40px;
+   font-weight: 400;
+   line-height: 1.2;
+   text-decoration: none;
+   color: #FFF;
+}
+
+.toggle-bar a {
+    color: #B7BBBF;
+    text-decoration: none;
+}
+
+#DASIL-menu {
+   background: none repeat scroll 0% 0% #383F49;
+   position: fixed;
+   top: 0;
+   height: 100%;
+   width: 16%;
+   padding: 90px 2% 2%;
+   overflow-y: scroll;
+   overflow-x: hidden;
+   z-index: 100;
+   transform: translate(0px, 40px);
+   display: block;
+   margin-left: -10px;
+
+}
+
+.toggle-bar {
+    background: none repeat scroll 0% 0% #30353C;
+    display: inline-block;
+    margin: 0px;
+    margin-left: -10px;
+    padding: 8px 30px;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 90%;
+    z-index: 200;
+    font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 100%;
+    vertical-align: center;
+    overflow: hidden;
+}
+
+.toggle-bar li {
+    list-style-type: none;
+    color: #B7BBBF;
+    display: inline-block;
+    padding-down: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    list-style:none;
+}
+
+.main-navigation a {
+    color: #DCDEE1;
+    display: block;
+    padding: 2% 0px;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: "Roboto Condensed", "Helvetica Neue", Helvitica, Arial, sans-serif;
+}
+
+#menu-mainmenu, .menu-item, .menu-item{
+    list-style: none;
+}
+
+
+ul {
+    list-style: outside none square;
+    list-style-image: none;
+    list-style-position: outside;
+    left-margin: 50%;
+}
+
+.toggle-bar a:hover, .toggle-bar a.current {
+    color-text: #80858A;
+}
+
+.content {
+    position: relative;
+    width: 80%;
+    float: right;
+
+}
+
+#side-panel {
+    margin: 0px 20px 20px 0px;
+    width: 240px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#includedContent {
+    position: relative;
+    display: inline-block;
+    width: 80%;
+    height: 100%;
+    float: right;
+}
+iframe[seamless] {
+    border: none;
+    float: right;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    margin-top: 40px;
+}
