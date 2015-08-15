@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="utf-8" http-equiv="encoding">
+<link type="txt/css"rel="stylesheet"href="Headers.css">
+  <link rel="stylesheet" type="text/css" href="Headers.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="meanincome.css" media="screen" />
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"/>
+  <link type="text/css" rel="stylesheet" href="ss/src/css/graph.css"/>
+  <link type="text/css" rel="stylesheet" href="ss/src/css/detail.css"/>
+  <link type="text/css" rel="stylesheet" href="ss/src/css/legend.css"/>
+  <link type="text/css" rel="stylesheet" href="ss/examples/css/extensions.css"/>
+
+  <script src="ss/vendor/d3.min.js" charset="utf-8"></script>
+  <script src="ss/vendor/d3.layout.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+</head>
+
+<body> 
+<div class="outer-container">
+        <div id=blackBar>
+        <a href="http://www.grinnell.edu/"> <img id="grinnell" src="http://dasil.grinnell.edu/wp-content/uploads/2014/10/grinnell_logo.png"alt="Grinnell College logo"></a>
+        </div>
+
+      <div id="DASIL-menu" style="display: inline-block">
+        <ul class="toggle-bar"> 
+        <!-- Main Navigation -->
+          <li>
+            <a href="#tabs-1" class="current nav-toggle" data-tab="tab-1">
+              Main Menu
+              </a>
+          </li>
+          <!-- Featured Posts navigation -->
+          <!-- Sidebar widgets navigation --> 
+          <li>
+            <a href="#tab-3" data-tab="tab-3">
+              Blog Menu
+            </a>
+          </li>
+        </ul>
+        <a id="main-title" href="http://dasil.grinnell.edu/">
+          DATA ANALYSIS AND SOCIAL INQUIRY LAB
+          </a>
+        <div id="tabs" class="toggle-tabs">
+          <div class="site-header-inside">
+            <div id="tab-1" class="tab-content current animated fadeIn">
+              <nav id="site-navigation" class="main-navigation"
+                   role="navigation">
+                <div class="menu-mainmenu-container">
+                     <ul id="menu-mainmenu" class="menu">
+                        <li id="menu-item-284" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-284"><a href="http://dasil.grinnell.edu/about-dasil/">About DASIL</a></li>
+						<li id="menu-item-502" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-502"><a href="http://dasil.grinnell.edu">DASIL Blog</a></li>
+						<li id="menu-item-581" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-581"><a href="http://www.grinnell.edu/academics/arc/data-inquiry-lab">Staff and Services</a></li>
+						<li id="menu-item-285" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-285"><a href="http://dasil.grinnell.edu/data-visualizations/">Data Visualizations</a>
+					<ul class="sub-menu">
+						<li id="menu-item-551" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-551"><a href="http://dasil.grinnell.edu/economics/">Economics</a></li>
+						<li id="menu-item-550" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-550"><a href="http://dasil.grinnell.edu/political-science/">Political Science</a></li>
+						<li id="menu-item-549" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-549"><a href="http://dasil.grinnell.edu/health-and-medicine/">Health and Medicine</a></li>
+						<li id="menu-item-559" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-559"><a href="http://dasil.grinnell.edu/anthropology-and-sociology/">Anthropology and Sociology</a></li>
+						<li id="menu-item-799" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-799"><a href="http://dasil.grinnell.edu/history/">History</a></li>
+						<li id="menu-item-548" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-548"><a href="http://dasil.grinnell.edu/college-data/">Education Data</a></li>
+					</ul>
+			</li>
+</ul></div>					</nav><!-- #site-navigation -->
+				</div><!-- #tab-1 -->
+                
+        </div> <!--toggle tabs-->
+      </div> <!-- DASIL-menu-->
+      </div>
+      </div>
+  <div id="includedContent" class="content">
+    <iframe src = "mapp.html" seamless> </iframe>
+  </div><!--content-->
+
+
+</body>
+</head>
