@@ -131,8 +131,13 @@ ul {
 
 iframe[seamless] {
     border: medium none;
-    float: left;
+    float: right;
+    position: absolute;
     margin-top: 10%;
+    position: absolute;
+    width: 80%;
+    height:90%;
+    vertical-align: bottom;
 }
 
 @font-face {

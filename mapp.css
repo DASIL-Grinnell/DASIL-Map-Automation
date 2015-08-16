@@ -1,0 +1,66 @@
+a#pagetitle {
+   font-family: "Roboto Condensed", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+   font-size: 40px;
+   font-weight: 400;
+   letter-spacing: -1px;
+   line-height: 1.2;
+   text-decoration: none;
+   font-style: normal;
+   text-transform: uppercase;
+   color: #404040;
+   float: right;
+   margin-right: 24%;
+}
+
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed Regular'), local('RobotoCondensed-Regular'), url(http://themes.googleusercontent.com/static/fonts/robotocondensed/v7/Zd2E9abXLFGSr9G3YK2MsNxB8OB85xaNTJvVSB9YUjQ.woff) format('woff');
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Source Sans Pro"), local("SourceSansPro-Regular"), url("http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlOgEI-65pc1uHHusEBt4aX4.woff2") format("woff2"), url("http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlDLXPPWpYIJRcQ99gLLWTOQ.woff") format("woff");
+}
+
+#bod {
+	float: right;
+}
+
+credit {
+	font-family: "Source Sans Pro";
+	color: #767676;
+}
+
+.date {
+	font-family: "Source Sans Pro";
+	padding: 3px;
+	float: left;
+	text-transform: uppercase;
+}
+
+.by {
+	font-family: "Source Sans Pro";
+	padding: 3px;
+	float: left;
+	text-transform: italicize;
+}
+
+.id {
+	font-family: "Source Sans Pro";
+	padding: 3px;
+	float: left;
+	text-transform: uppercase;
+}
+
+#map {
+	float: right;
+}
+
+svg {
+	float: right;
+}
+
