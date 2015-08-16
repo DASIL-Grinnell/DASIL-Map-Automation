@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta content="utf-8" http-equiv="encoding">
-<link type="text/css"rel="stylesheet"href="Headers.css">
-  <link rel="stylesheet" type="text/css" href="Headers.css" media="screen" />
-  <link rel="stylesheet" type="text/css" href="mappage.css" media="screen" />
-  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"/>
-  <link type="text/css" rel="stylesheet" href="ss/src/css/graph.css"/>
-  <link type="text/css" rel="stylesheet" href="ss/src/css/detail.css"/>
-  <link type="text/css" rel="stylesheet" href="ss/src/css/legend.css"/>
-  <link type="text/css" rel="stylesheet" href="ss/examples/css/extensions.css"/>
+	<meta charset="UTF-8">
+	<meta content="utf-8" http-equiv="encoding">
+	<link type="text/css" rel="stylesheet" href="Headers.css">
+  	<link rel="stylesheet" type="text/css" href="Headers.css" media="screen" />
+  	<link rel="stylesheet" type="text/css" href="mappage.css" media="screen" />
+  	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"/>
+  	<link type="text/css" rel="stylesheet" href="ss/src/css/graph.css"/>
+  	<link type="text/css" rel="stylesheet" href="ss/src/css/detail.css"/>
+  	<link type="text/css" rel="stylesheet" href="ss/src/css/legend.css"/>
+  	<link type="text/css" rel="stylesheet" href="ss/examples/css/extensions.css"/>
 
-  <script src="ss/vendor/d3.min.js" charset="utf-8"></script>
-  <script src="ss/vendor/d3.layout.min.js"></script>
+  	<script src="ss/vendor/d3.min.js" charset="utf-8"></script>
+  	<script src="ss/vendor/d3.layout.min.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+  	
+  	<script>
+  	$(window).scroll(function(){
+  	    var $this = $(this);
+  	    $('#blackBar').css('top', $this.scrollTop());
+  	});
+  	</script>
 </head>
 
 <body> 

@@ -30,6 +30,10 @@ a#pagetitle {
 	float: right;
 }
 
+#key {
+	float: left;
+}
+
 credit {
 	margin-top:10%;
 	font-family: "Source Sans Pro";
@@ -63,5 +67,9 @@ credit {
 
 svg {
 	float: right;
+}
+
+path:hover {
+	border: 3px solid black;
 }
 

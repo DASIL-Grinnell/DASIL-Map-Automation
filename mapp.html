@@ -12,6 +12,19 @@
 		<p class="id"> Amanda Hinchman-Dominguez, Student, Grinnell College </p>
 	</span> 
 	<br> </br>
+	<div id="interactive_panel">
+		<div id="key">
+			<p> Key </p>
+			<div id="keybox"></div>
+			
+		</div>
+		<div id="selected_country">
+		
+		</div>
+		<div id="option_panel">
+		
+		</div>
+	</div>
 	<div id="map">
 		<a id="pagetitle"> World Population </a>
 
@@ -103,9 +116,14 @@
     								.on("click", function () {  //display on click
     									d3.select(this).style("opacity", 1);
     								});*/
+    								
 					});
-   
-	
-</script>
+			
+			
+			d3.select("path").transition()
+				.style("border", "2px black solid");
+			
+		</script>
+	</div>
 </body>
 </html>
