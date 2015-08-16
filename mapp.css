@@ -9,7 +9,7 @@ a#pagetitle {
    text-transform: uppercase;
    color: #404040;
    float: right;
-   margin-right: 24%;
+   margin-right: 2%;
 }
 
 @font-face {
@@ -31,6 +31,7 @@ a#pagetitle {
 }
 
 credit {
+	margin-top:10%;
 	font-family: "Source Sans Pro";
 	color: #767676;
 }

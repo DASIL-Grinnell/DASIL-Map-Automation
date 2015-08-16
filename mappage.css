@@ -107,7 +107,17 @@ ul {
     left-margin: 50%;
 }
 
-.toggle-bar a:hover, .toggle-bar a.current {
+.toggle-bar a {
+	padding: 5px;
+	font-size: 20px;
+	line-height: 1.5;
+}
+
+.toggle-bar a:hover {
+	color-text: #FFF;
+}
+
+.toggle-bar a.current {
     color-text: #80858A;
 }
 
@@ -126,17 +136,16 @@ ul {
 #includedContent {
     width: 80%;
     float: right;
-    height: 100%;
+    height: 90%;
+    margin-top: 2%;
 }
 
 iframe[seamless] {
     border: medium none;
-    float: right;
-    position: absolute;
-    margin-top: 10%;
-    position: absolute;
-    width: 80%;
-    height:90%;
+    position: relative;
+    margin-top: 1%;
+    width: 100%;
+    height:100%;
     vertical-align: bottom;
 }
 
