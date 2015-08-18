@@ -17,11 +17,34 @@
 	<div id="interactive_panel">
 		<div id="key">
 			<p> Key </p>
-			<div id="keybox"></div>
-			
+		<div id="keybox"></div>
+			<!-- create a multigradient box -->
 		</div>
 		<div id="selected_country">
-		
+			<!-- grab text from d3js and display them here -->
+			<table>
+				<tr id="selected"> 
+					<th>
+						<!--  display name of hovered country -->
+					</th>
+				</tr>
+				<tr id="totalpop"> 
+					<th>
+						<h3> Total Population </h3>
+					</th>
+					<th>
+						<!-- display country totpop data  -->
+					</th>
+				</tr>
+				<tr id="gdp"> 
+					<th>
+						<h3> GDP </h3>
+					</th>
+					<th>
+						<!-- display country gdp data  -->
+					</th>
+				</tr>
+			</table>	
 		</div>
 		<div id="option_panel">
 		
@@ -64,13 +87,6 @@
     			// create the path
     			var path = d3.geo.path().projection(projection);
 
-
-    			// new projection
-   				/* projection = d3.geo.mercator().center(center)
-        			.scale(scale).translate(offset);
-    				path = path.projection(projection); */
-
-
 				for (var i = 0; i < json.features.length; i++) {
 	 				var1[i] = json.features[i].properties.GDPpcap;
 	 			}
@@ -84,28 +100,28 @@
 	 				color[i] = colorScale(var1[i]);
 	 			}
 
-	 				//makes the map
-					svg.selectAll("path")
-    					.data(json.features)
-    					.enter()
-    					.append("path")
-    						.attr("d", d3.geo.path().projection(projection))
-							.attr("stroke", "black")
-							.attr("fill", function(json, i) {	
-								if (var1[i] > 0) { 
-									return color[i];
-									}
-								else {
-									return "grey";}
-								}) //missing data is grey
+	 			//makes the map
+				svg.selectAll("path")
+    				.data(json.features)
+    				.enter()
+    				.append("path")
+    					.attr("d", d3.geo.path().projection(projection))
+						.attr("stroke", "black")
+						.attr("fill", function(json, i) {	
+							if (var1[i] > 0) { 
+								return color[i];
+							}
+							else {
+								return "grey";}
+							}) //missing data is grey
 								
 								
-    					.on("mouseover", function(d) {
-    						d3.select(this).style('fill-opacity', 2);
-    					})
-	 					.on("mouseout", function(d) {
-	 						d3.select(this).style('fill-opacity', .5);
-	 					})
+    				.on("mouseover", function(d) {
+    					d3.select(this).style('fill-opacity', 2);
+    				})
+	 				.on("mouseout", function(d) {
+	 					d3.select(this).style('fill-opacity', .5);
+	 				})
 			});
 			
 		</script>
