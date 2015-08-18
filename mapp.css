@@ -73,3 +73,27 @@ path:hover {
 	border: 3px solid black;
 }
 
+.states {
+    stroke: #000;
+    fill-opacity: .7;
+}
+
+
+.country {
+  stroke: red;
+  stroke-width: .5px;
+  stroke-linejoin: round;
+}
+
+.graticule {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: .5px;
+}
+
+.graticule-outline {
+  fill: none;
+  stroke: #FFF;
+  stroke-width: 1.5px;
+}

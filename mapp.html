@@ -3,6 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<script type="text/javascript" src="d3.min.js"></script>
+	<script src="http://d3js.org/topojson.v0.min.js"></script>
+	<script type="text/javascript" src="tooltip.js"><</script>
 	<link type="text/css" rel="stylesheet" href="mapp.css">
 </head>
 <body>
@@ -40,33 +42,38 @@
 			var padding = 50;
 			var var1 = [];
 			var color = [];
+			
+			var div = d3.select("body").append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
 
 			var svg = d3.select("body").append("svg")
-			//a box to contain the map
+				//a box to contain the map
     			.attr("width", w + margin.left + margin.right)
     			.attr("height", h + margin.top + margin.bottom)
     			.style("border", "2px solid black");
 
 			//acesses the json and creates a projection
 			var map = d3.json("WorldDistPop.json", function (json) {
-    		// create a first guess for the projection
-    		var center = d3.geo.centroid(json);
-    		var scale = 140;
-    		var offset = [w / 2, h / 2];
-    		var projection = d3.geo.mercator().scale(scale).center(center)
+    			// create a first guess for the projection
+    			var center = d3.geo.centroid(json);
+    			var scale = 140;
+    			var offset = [w / 2, h / 2];
+    			var projection = d3.geo.mercator().scale(scale).center(center)
         		.translate(offset);
-    		// create the path
-    		var path = d3.geo.path().projection(projection);
+    			// create the path
+    			var path = d3.geo.path().projection(projection);
 
 
-    		// new projection
-   			/* projection = d3.geo.mercator().center(center)
-        		.scale(scale).translate(offset);
-    			path = path.projection(projection); */
+    			// new projection
+   				/* projection = d3.geo.mercator().center(center)
+        			.scale(scale).translate(offset);
+    				path = path.projection(projection); */
 
 
-			for (var i = 0; i < json.features.length; i++) {
-	 			var1[i] = json.features[i].properties.GDPpcap;}
+				for (var i = 0; i < json.features.length; i++) {
+	 				var1[i] = json.features[i].properties.GDPpcap;
+	 			}
 				//sets a quantized scale based on the automatically-calculated data range
 				var colorScale = d3.scale.quantize()
     				.range(['rgb(254,240,217)','rgb(253,204,138)',
@@ -74,54 +81,32 @@
     				.domain([d3.min(var1), d3.max(var1)]);
 				//links the data variable to the color scale
 				for (var i = 0; i < json.features.length; i++) {
-	 				color[i] = colorScale(var1[i]);}
+	 				color[i] = colorScale(var1[i]);
+	 			}
 
 	 				//makes the map
 					svg.selectAll("path")
     					.data(json.features)
     					.enter()
     					.append("path")
-    					.attr("d", d3.geo.path().projection(projection))
-						.attr("stroke", "black")
-						.attr("fill", function(json, i) {	
-							if (var1[i] > 0) { 
-								return color[i];
-								}
-							else {
-								return "grey";}
-							}) //missing data is grey
-
-					//sets country labels--Problem=click locus identical to label, not country
-					/*var labels = svg.selectAll("text")
-									.data(json.features)
-    								.enter()
-    								.append("text")
-    								.text(function (json) {
-    									return json.properties.CNTRY_NAME;
-									})
-    								.attr("x", function (json) {
-    									var centroid = path.centroid(json),
-        								x = centroid[0];
-    									return x - 20;
-									})
-    								.attr("y", function (json) {
-    									var centroid = path.centroid(json),
-        								y = centroid[1];
-    									return y;
-									})
-    								.attr("font-family", "serif")
-    								.attr("font-size", "16")
-    								.attr("fill", "black")
-    								.attr("opacity", 0) //labels normally not displayed
-    								.on("click", function () {  //display on click
-    									d3.select(this).style("opacity", 1);
-    								});*/
-    								
-					});
-			
-			
-			d3.select("path").transition()
-				.style("border", "2px black solid");
+    						.attr("d", d3.geo.path().projection(projection))
+							.attr("stroke", "black")
+							.attr("fill", function(json, i) {	
+								if (var1[i] > 0) { 
+									return color[i];
+									}
+								else {
+									return "grey";}
+								}) //missing data is grey
+								
+								
+    					.on("mouseover", function(d) {
+    						d3.select(this).style('fill-opacity', 2);
+    					})
+	 					.on("mouseout", function(d) {
+	 						d3.select(this).style('fill-opacity', .5);
+	 					})
+			});
 			
 		</script>
 	</div>
