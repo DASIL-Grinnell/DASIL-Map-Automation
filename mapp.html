@@ -14,117 +14,172 @@
 		<p class="id"> Amanda Hinchman-Dominguez, Student, Grinnell College </p>
 	</span> 
 	<br> </br>
-	<div id="interactive_panel">
+	<div id="map">
+		<a id="pagetitle"> World Population </a>
+		<div id="somanydivs">	
 		<div id="key">
-			<p> Key </p>
-		<div id="keybox"></div>
-			<!-- create a multigradient box -->
+				<p id="k"> Key </p>
+				<div id="keybox"></div>
+				<div id="greybox"></div>
+				<p id="caption"> grey countries indicate no data. </p> 
 		</div>
+		
+  			<script>
+				var margin = {
+    				top: 20,
+    				right: 10,
+    				bottom: 30,
+    				left: 50
+				};
+				var h = window.innerHeight * 1 - margin.top - margin.bottom; 
+				var w = window.innerWidth * .75 - margin.left - margin.right;
+				var padding = 50;
+				var var1 = [];
+				var color = [];
+			
+				var div = d3.select("body").append("div")
+					.attr("class", "tooltip")
+					.style("opacity", 0);
+
+				var svg = d3.select("body").append("svg")
+					//a box to contain the map
+    				.attr("width", w + margin.left + margin.right)
+    				.attr("height", h + margin.top + margin.bottom)
+    				.style("border", "2px solid black");
+				
+				/*svg.append("foreignObject")
+					.attr("width", 200)
+					.attr("height", 100)
+			       .append("xhtml:body")
+			       	.style("")
+			       	.html("<p>Key</p> <div></div>");
+				*/
+
+				//accesses the json and creates a projection
+				var map = d3.json("WorldDistPop.json", function (json) {
+    				// create a first guess for the projection
+    				var center = d3.geo.centroid(json);
+    				var scale = 140;
+    				var offset = [w / 2, h / 2];
+    				var projection = d3.geo.mercator().scale(scale).center(center)
+        			.translate(offset);
+    				// create the path
+    				var path = d3.geo.path().projection(projection);
+
+					for (var i = 0; i < json.features.length; i++) {
+	 					var1[i] = json.features[i].properties.GDPpcap;
+	 				}
+					//sets a quantized scale based on the automatically-calculated data range
+					var colorScale = d3.scale.quantize()
+    					.range(['rgb(254,240,217)','rgb(253,204,138)',
+							'rgb(252,141,89)','rgb(215,48,31)'])
+    					.domain([d3.min(var1), d3.max(var1)]);
+					//links the data variable to the color scale
+					for (var i = 0; i < json.features.length; i++) {
+	 					color[i] = colorScale(var1[i]);
+	 				}
+
+	 				//makes the map
+					svg.selectAll("path")
+    					.data(json.features)
+    					.enter()
+    					.append("path")
+    						.attr("d", d3.geo.path().projection(projection))
+							.attr("stroke", "black")
+							.attr("fill", function(json, i) {	
+								if (var1[i] > 0) { 
+									return color[i];
+								}
+								else {
+									return "grey";}
+								}) //missing data is grey
+								
+								
+    					.on("mouseover", function(d) {
+    						d3.select(this).style('fill-opacity', 2);
+    					})
+	 					.on("mouseout", function(d) {
+	 						d3.select(this).style('fill-opacity', .5);
+	 					})
+	 				
+	 					/*
+	 					//connect html table to d3js, as directed by 
+	 					// http://www.d3noob.org/2013/02/add-html-table-to-your-d3js-graph.html
+	 					function tabulate(data, columns) {
+	 						var table = d3.select("body").append("table"),
+	 							thead = table.append("thead"),
+	 							tbody = table.append("tbody");
+	 					
+	 						// append the header row
+	 						thead.append("tr")
+	 							.selectAll("th")
+	 							.data(columns)
+	 							.enter()
+	 							.append("th")
+	 								.text(function column { return column; });
+	 					
+		 					// create a row for each object in the data
+	 						var rows = rows.selectAll("tr")
+	 							.data(data)
+	 							.enter()
+	 							.append("tr");
+	 					
+	 						// create a cell in each row for each column
+		 					var cells = rows.selectAll("td")
+		 						.data(function(row) {
+	 								return columns.map(function(column) {
+	 									return column: column, value: row[column]};
+	 								});
+	 							})
+	 							.enter()
+	 							.append("td")
+	 							.attr("style", "font-family: Sans Pro Source")
+	 								.html(function(d) { return d.value; });	
+	 						return table;
+	 					}
+	 			
+		 			//render the table
+	 				var tab = tabulate(data, ["date", "close"]);
+	 				*/
+				});
+			
+			</script>
+		</div>
+	</div> <!-- map -->
+	
+	<div id="interactive_panel">
 		<div id="selected_country">
 			<!-- grab text from d3js and display them here -->
 			<table>
 				<tr id="selected"> 
-					<th>
+					<th id="selectedheader" class="datum">
+						<h3> Selected Country </h3>
 						<!--  display name of hovered country -->
 					</th>
 				</tr>
 				<tr id="totalpop"> 
-					<th>
-						<h3> Total Population </h3>
-					</th>
-					<th>
+					<td class="tabp">
+						<p> Total Population </p>
+					</td>
+					<td class="tabp">
 						<!-- display country totpop data  -->
-					</th>
+					</td>
 				</tr>
 				<tr id="gdp"> 
-					<th>
-						<h3> GDP </h3>
-					</th>
-					<th>
+					<td class="tabp">
+						<p> GDP </p>
+					</td>
+					<td class="tabp">
 						<!-- display country gdp data  -->
-					</th>
+					</td>
 				</tr>
 			</table>	
-		</div>
+		</div> <!--  selected_county -->
+	</div> <!-- interactive panel -->
+	<div id="bottom interactive panel">
 		<div id="option_panel">
 		
 		</div>
-	</div>
-	<div id="map">
-		<a id="pagetitle"> World Population </a>
-
-  		<script>
-			var margin = {
-    			top: 20,
-    			right: 10,
-    			bottom: 30,
-    			left: 50
-			};
-			var h = window.innerHeight * 1 - margin.top - margin.bottom; 
-			var w = window.innerWidth * .75 - margin.left - margin.right;
-			var padding = 50;
-			var var1 = [];
-			var color = [];
-			
-			var div = d3.select("body").append("div")
-				.attr("class", "tooltip")
-				.style("opacity", 0);
-
-			var svg = d3.select("body").append("svg")
-				//a box to contain the map
-    			.attr("width", w + margin.left + margin.right)
-    			.attr("height", h + margin.top + margin.bottom)
-    			.style("border", "2px solid black");
-
-			//acesses the json and creates a projection
-			var map = d3.json("WorldDistPop.json", function (json) {
-    			// create a first guess for the projection
-    			var center = d3.geo.centroid(json);
-    			var scale = 140;
-    			var offset = [w / 2, h / 2];
-    			var projection = d3.geo.mercator().scale(scale).center(center)
-        		.translate(offset);
-    			// create the path
-    			var path = d3.geo.path().projection(projection);
-
-				for (var i = 0; i < json.features.length; i++) {
-	 				var1[i] = json.features[i].properties.GDPpcap;
-	 			}
-				//sets a quantized scale based on the automatically-calculated data range
-				var colorScale = d3.scale.quantize()
-    				.range(['rgb(254,240,217)','rgb(253,204,138)',
-						'rgb(252,141,89)','rgb(215,48,31)'])
-    				.domain([d3.min(var1), d3.max(var1)]);
-				//links the data variable to the color scale
-				for (var i = 0; i < json.features.length; i++) {
-	 				color[i] = colorScale(var1[i]);
-	 			}
-
-	 			//makes the map
-				svg.selectAll("path")
-    				.data(json.features)
-    				.enter()
-    				.append("path")
-    					.attr("d", d3.geo.path().projection(projection))
-						.attr("stroke", "black")
-						.attr("fill", function(json, i) {	
-							if (var1[i] > 0) { 
-								return color[i];
-							}
-							else {
-								return "grey";}
-							}) //missing data is grey
-								
-								
-    				.on("mouseover", function(d) {
-    					d3.select(this).style('fill-opacity', 2);
-    				})
-	 				.on("mouseout", function(d) {
-	 					d3.select(this).style('fill-opacity', .5);
-	 				})
-			});
-			
-		</script>
 	</div>
 </body>
 </html>
