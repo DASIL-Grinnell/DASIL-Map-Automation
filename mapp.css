@@ -118,6 +118,7 @@ svg {
 #keybox {
 	width:338px;height:22px;
  	background-color:#D7301F;
+ 	margin-top: 20px;
  	filter:progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#D7301F, endColorstr=#FC8D59);
  	background-image:-moz-linear-gradient(right, #D7301F 0%, #FC8D59 25%,#FDCC8A 50%,#FEF0D9 100%);
 	background-image:linear-gradient(right, #D7301F 0%, #FC8D59 25%,#FDCC8A 50%,#FEF0D9 100%);
@@ -136,9 +137,10 @@ svg {
  	font-family: "Source Sans Pro";
 	margin-top: -5%;
 	margin-left: -4%;
+	float: left;
  }
  
-  #caption {
+ #caption {
     font-family: "Source Sans Pro";
  }
  
@@ -152,5 +154,12 @@ svg {
  	
  }
  
- tr {
- width }
+ #greybox {
+	background: grey;
+	width: 25px;
+	height: 25px;
+	margin-top: 10px;
+	margin-left: 15%;
+	float: left;
+	margin-right: 10px;
+}

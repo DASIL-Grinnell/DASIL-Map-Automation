@@ -44,23 +44,15 @@
 				var svg = d3.select("body").append("svg")
 					//a box to contain the map
     				.attr("width", w + margin.left + margin.right)
-    				.attr("height", h + margin.top + margin.bottom)
+    				.attr("height", h + (margin.top*2) + (margin.bottom*2))
     				.style("border", "2px solid black");
-				
-				/*svg.append("foreignObject")
-					.attr("width", 200)
-					.attr("height", 100)
-			       .append("xhtml:body")
-			       	.style("")
-			       	.html("<p>Key</p> <div></div>");
-				*/
 
 				//accesses the json and creates a projection
 				var map = d3.json("WorldDistPop.json", function (json) {
     				// create a first guess for the projection
     				var center = d3.geo.centroid(json);
     				var scale = 140;
-    				var offset = [w / 2, h / 2];
+    				var offset = [w / 2 + margin.right + margin.left, h / 2];
     				var projection = d3.geo.mercator().scale(scale).center(center)
         			.translate(offset);
     				// create the path
