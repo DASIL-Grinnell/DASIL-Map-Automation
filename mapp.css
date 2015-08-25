@@ -117,15 +117,15 @@ svg {
 
 #keybox {
 	width:338px;height:22px;
- 	background-color:#D7301F;
+ 	background-color:#ffffcc;
  	margin-top: 20px;
- 	filter:progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#D7301F, endColorstr=#FC8D59);
- 	background-image:-moz-linear-gradient(right, #D7301F 0%, #FC8D59 25%,#FDCC8A 50%,#FEF0D9 100%);
-	background-image:linear-gradient(right, #D7301F 0%, #FC8D59 25%,#FDCC8A 50%,#FEF0D9 100%);
-	background-image:-webkit-linear-gradient(right, #D7301F 0%, #FC8D59 25%,#FDCC8A 50%,#FEF0D9 100%);
-	background-image:-o-linear-gradient(right, #D7301F 0%, #FC8D59 25%,#FDCC8A 50%,#FEF0D9 100%);
-	background-image:-ms-linear-gradient(right, #D7301F 0%, #FC8D59 25%,#FDCC8A 50%,#FEF0D9 100%);
- 	background-image:-webkit-gradient(linear, right bottom, left bottom, color-stop(0%,#D7301F), color-stop(25%,#FC8D59),color-stop(50%,#FDCC8A),color-stop(100%,#FEF0D9));
+ 	filter:progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#ffffcc, endColorstr=#a1dab4);
+ 	background-image:-moz-linear-gradient(left, #ffffcc 0%, #a1dab4 25%,#41b6c4 50%,#225ea8 100%);
+	background-image:linear-gradient(left, #ffffcc 0%, #a1dab4 25%,#41b6c4 50%,#225ea8 100%);
+	background-image:-webkit-linear-gradient(left, #ffffcc 0%, #a1dab4 25%,#41b6c4 50%,#225ea8 100%);
+	background-image:-o-linear-gradient(left, #ffffcc 0%, #a1dab4 25%,#41b6c4 50%,#225ea8 100%);
+	background-image:-ms-linear-gradient(left, #ffffcc 0%, #a1dab4 25%,#41b6c4 50%,#225ea8 100%);
+ 	background-image:-webkit-gradient(linear, left bottom, right bottom, color-stop(0%,#ffffcc), color-stop(25%,#a1dab4),color-stop(50%,#41b6c4),color-stop(100%,#225ea8));
  }
  
  table {
@@ -145,14 +145,13 @@ svg {
  }
  
  #key {
- 	margin-top: 6%;
+ 	margin-top: 50.5%;
  	margin-left: -3%;
  	background: #FFF;
  	position: absolute;
  	padding: 15px;
  	border: black solid 2px;
- 	
- }
+}
  
  #greybox {
 	background: grey;

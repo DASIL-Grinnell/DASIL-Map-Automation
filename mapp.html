@@ -40,13 +40,11 @@
 				var div = d3.select("body").append("div")
 					.attr("class", "tooltip")
 					.style("opacity", 0);
-
 				var svg = d3.select("body").append("svg")
 					//a box to contain the map
     				.attr("width", w + margin.left + margin.right)
     				.attr("height", h + (margin.top*2) + (margin.bottom*2))
     				.style("border", "2px solid black");
-
 				//accesses the json and creates a projection
 				var map = d3.json("WorldDistPop.json", function (json) {
     				// create a first guess for the projection
@@ -57,20 +55,18 @@
         			.translate(offset);
     				// create the path
     				var path = d3.geo.path().projection(projection);
-
 					for (var i = 0; i < json.features.length; i++) {
 	 					var1[i] = json.features[i].properties.GDPpcap;
 	 				}
 					//sets a quantized scale based on the automatically-calculated data range
 					var colorScale = d3.scale.quantize()
-    					.range(['rgb(254,240,217)','rgb(253,204,138)',
-							'rgb(252,141,89)','rgb(215,48,31)'])
+    					.range(['#ffffcc','#a1dab4',
+							'#41b6c4','#225ea8'])
     					.domain([d3.min(var1), d3.max(var1)]);
 					//links the data variable to the color scale
 					for (var i = 0; i < json.features.length; i++) {
 	 					color[i] = colorScale(var1[i]);
 	 				}
-
 	 				//makes the map
 					svg.selectAll("path")
     					.data(json.features)
@@ -88,10 +84,12 @@
 								
 								
     					.on("mouseover", function(d) {
-    						d3.select(this).style('fill-opacity', 2);
+    						d3.select(this).style('stroke-width', '2px')
+    										.style('fill-opacity', 2);
     					})
 	 					.on("mouseout", function(d) {
-	 						d3.select(this).style('fill-opacity', .5);
+	 						d3.select(this).style('stroke-width', '1px')
+	 										.style('fill-opacity', 1);
 	 					})
 	 				
 	 					/*
