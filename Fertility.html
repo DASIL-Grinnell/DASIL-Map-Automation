@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" height="100%">
+<head>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="d3.min.js"></script>
+	<script src="http://d3js.org/topojson.v0.min.js"></script>
+	<script type="text/javascript" src="tooltip.js"><</script>
+	<link type="text/css" rel="stylesheet" href="mapp.css">
+</head>
+<body>
+	<div id="somanydivs">	
+	<div id="key">
+		<p id="k"> Key </p>
+		<div id="keybox"></div>
+		<div id="greybox"></div>
+		<p id="caption"> grey countries indicate no data. </p> 
+	</div>
+		
+  	<script>
+		var margin = {
+    		top: 20,
+    		right: 10,
+    		bottom: 30,
+    		left: 50
+		};
+		
+		var h = window.innerHeight * 1 - margin.top - margin.bottom; 
+		var w = window.innerWidth * .75 - margin.left - margin.right;
+		var padding = 50;
+		var var1 = [];
+		var color = [];
+			
+		var div = d3.select("body").append("div")
+			.attr("class", "tooltip")
+			.style("opacity", 0);
+		var svg = d3.select("body").append("svg")
+			//a box to contain the map
+    		.attr("width", w + margin.left + margin.right)
+    		.attr("height", h + (margin.top*2) + (margin.bottom*2))
+    		.style("border", "2px solid black");
+			//accesses the json and creates a projection
+			var map = d3.json("Fertility.json", function (json) {
+    		// create a first guess for the projection
+    		var center = d3.geo.centroid(json);
+    		var scale = 140;
+    		var offset = [w / 2 + (margin.top*8), h / 2];
+    		var projection = d3.geo.mercator().scale(scale).center(center)
+        		.translate(offset);
+    		// create the path
+    		var path = d3.geo.path().projection(projection);
+			
+    		for (var i = 0; i < json.features.length; i++) {
+	 			var1[i] = json.features[i].properties.GDPpcap;
+	 		}
+			
+    		//sets a quantized scale based on the automatically-calculated data range
+			var colorScale = d3.scale.quantize()
+    							.range(['#ffffcc','#a1dab4',
+									'#41b6c4','#225ea8'])
+    							.domain([d3.min(var1), d3.max(var1)]);
+			//links the data variable to the color scale
+			for (var i = 0; i < json.features.length; i++) {
+	 			color[i] = colorScale(var1[i]);
+	 		}
+	 		
+			//makes the map
+			svg.selectAll("path")
+    			.data(json.features)
+    			.enter()
+    			.append("path")
+    			.attr("d", d3.geo.path().projection(projection))
+				.attr("stroke", "black")
+				.attr("fill", function(json, i) {	
+				
+					if (var1[i] > 0) { 
+						return color[i];
+					}
+					else {
+						return "grey";}
+					}) //missing data is grey
+				
+					.attr("id", function(d) {
+						return d.id; // <--Sets the idd
+				})
+								
+								
+    			.on("mouseover", function(d) {
+    			d3.select(this).style('stroke-width', '2px')
+    								.style('fill-opacity', 2);
+    			})
+				.on("mouseout", function(d) {
+	 				d3.select(this).style('stroke-width', '1px')
+	 								.style('fill-opacity', 1);
+	 			})
+		});
+
+	</script>
+</div>
+</body>
