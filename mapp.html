@@ -1,42 +1,152 @@
+<!--  
+	September 1st, 2015:
+		Credit to Chris Kottle, who helped me resolve the URI and select issues I've had 
+ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<script type="text/javascript" src="d3.min.js"></script>
 	<script src="http://d3js.org/topojson.v0.min.js"></script>
-	<script type="text/javascript" src="tooltip.js"><</script>
 	<link type="text/css" rel="stylesheet" href="mapp.css">
-	<script>
-		function loadiframe(iframeName, url) {
-			var $iframe = $('#' + iframeName);
-			if ( $iframe.length ) {
-				$iframe.attr('src', url);
-				return false;
-			}}
-		}
-	</script>
 </head>
-<body>
-	<span id="credit">
-		<p class="date"> August 20, 2015 </p>
-		<p class="by">by</p>
-		<p class="id"> Amanda Hinchman-Dominguez, Student, Grinnell College </p>
-	</span> 
-	<a id="pagetitle"> Fertility </a>
-	<br> </br>
-	<div id="map">
-		<iframe name="ifrm" id="ifrm" src="WorldPopulation.html" width="100%" height="100%" seamless> </iframe>
-	</div> <!-- map -->
+<body onload="loadImage('Fertility.json')">
+	<div id="top">
+		<div id="credit">
+			<p class="date"> August 20, 2015 </p>
+			<p class="by">by</p>
+			<p class="id"> Amanda Hinchman-Dominguez, Student, Grinnell College </p>
+		</div> 
+		<a id="pagetitle"> Fertility </a>
+	</div>
+	<br/>
+	<script id="map">
 	
+	d3.csv("filelist.csv", function(data) {
+		d3.select("select").selectAll("option")
+							.data(data)
+							.enter()
+							.append("option")
+							.attr("id", function(d,i) {
+								return ("option" + i)
+							})
+							.text(function(d) {
+								return d.FileNames
+							});
+	});
+	
+	function loadImage(dataset) {
+		
+			var margin = {
+    			top: 20,
+    			right: 10,
+    			bottom: 30,
+    			left: 50
+			};
+		
+			var h = window.innerHeight * 1 - margin.top - margin.bottom; 
+			var w = window.innerWidth * .75 - margin.left - margin.right;
+			var padding = 50;
+			var var1 = [];
+			var color = [];
+			
+			/*var div = d3.select("body").append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);*/
+		
+			var svg = d3.select("body").append("svg")
+				//a box to contain the map
+				.attr("id", "mySVG")
+    			.attr("width", w + margin.left + margin.right)
+    			.attr("height", h + (margin.top*2) + (margin.bottom*2))
+    			.style("border", "2px solid black");
+				//accesses the json and creates a projection
+			var map = d3.json(dataset, function (json) {
+    			// create a first guess for the projection
+    			var center = d3.geo.centroid(json);
+    			var scale = 140;
+    			var offset = [w / 2 + (margin.top*8), h / 2];
+    			var projection = d3.geo.mercator().scale(scale).center(center)
+        			.translate(offset);
+    			// create the path
+    			var path = d3.geo.path().projection(projection);
+			
+    			for (var i = 0; i < json.features.length; i++) {
+	 				var1[i] = json.features[i].properties.GDPpcap;
+	 			}
+			
+    			//sets a quantized scale based on the automatically-calculated data range
+				var colorScale = d3.scale.quantize()
+    							.range(['#ffffcc','#a1dab4',
+									'#41b6c4','#225ea8'])
+    							.domain([d3.min(var1), d3.max(var1)]);
+				//links the data variable to the color scale
+				for (var i = 0; i < json.features.length; i++) {
+	 				color[i] = colorScale(var1[i]);
+	 			}
+	 		
+				//makes the map
+				svg.selectAll("path")
+    				.data(json.features)
+    				.enter()
+    				.append("path")
+    				.attr("d", d3.geo.path().projection(projection))
+					.attr("stroke", "black")
+					.attr("fill", function(json, i) {	
+				
+						if (var1[i] > 0) { 
+							return color[i];
+						}
+						else {
+							return "grey";}
+						}) //missing data is grey
+				
+					.attr("id", function(d) {
+						return d.id; // <--Sets the idd
+					})
+								
+								
+    				.on("mouseover", function(d) {
+    					d3.select(this).style('stroke-width', '2px')
+    									.style('fill-opacity', 2);
+    				})
+					.on("mouseout", function(d) {
+	 					d3.select(this).style('stroke-width', '1px')
+	 								.style('fill-opacity', 1);
+	 				})
+			});
+	}// loadImage()
+			
+	function changeDataset(dataset) {
+		console.log(dataset);
+		d3.selectAll("path")
+			.transition()
+			.duration(750)
+			.attr("height", 0)
+			setTimeout(function() {
+				d3.selectAll("#map")
+					.transition()
+					.duration(200)
+					.style("opacity", 0);
+					setTimeout(function() {
+						d3.selectAll("#mySVG")/*.selectAll("*")*/.remove();
+						loadImage(dataset + ".json")
+							d3.selectAll("#map").transition().duration(200).style("opacity", 1)
+						}, 450);
+				}, 750);
+	}// changeDataset()
+			
+			var dropDown = document.getElementById("selectBar");
+	
+			
+			</script>
+	<br/>
 	<div id="interactive_panel">
 		<div id="optionmenu">
-				<select name="jsonmap">
-					<option href="Fertility.html" onClick="return loadiframe('ifrm', this.href)"> Fertility </option>
-					<option href="WorldPopulation.html" onClick="return loadiframe('ifrm', this.href)"> Population </option>
-					<!-- add an option value here for more json file options -->
+				<select id="selectBar" onChange="changeDataset(this.options[this.selectedIndex].innerHTML);">
 				</select>
 		</div>
-	</div>
 		<div id="selected_country">
 			<!-- grab text from d3js and display them here -->
 			<table>
@@ -65,10 +175,5 @@
 			</table>	
 		</div> <!--  selected_county -->
 	</div> <!-- interactive panel -->
-	<div id="bottom interactive panel">
-		<div id="option_panel">
-		
-		</div>
-	</div>
 </body>
 </html>
