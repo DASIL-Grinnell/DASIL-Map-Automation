@@ -69,6 +69,7 @@ path:hover {
 #interactive_panel {
 	width:27%;
     margin-right: 15px;
+    margin-top: 5%;
 }
 
 #somanydivs {
@@ -84,11 +85,26 @@ path:hover {
 	font-family: Source Sans Pro;
 }
 
+.tooltip {
+	background: #eee;
+	box-shadow: 0 0 5px #999999;
+	color: #333;
+	display: none;
+	font-size: 12px;
+	left: 130px;
+	padding: 10px;
+	position: absolute;
+	text-align: center;
+	top: 95px;
+	width: 80px;
+	z-index: 10;
+}
+
 svg {
 	float: right;
 	width: 67%;
 	height: 37.5em;
-	margin-top: -37%;
+	margin-top: -41%;
 }
 
 .country {

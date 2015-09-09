@@ -10,6 +10,17 @@
 	<script type="text/javascript" src="d3.min.js"></script>
 	<script src="http://d3js.org/topojson.v0.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="mapp.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<script>
+	$(document).ready(function() {
+		$("select#selectBar").change(function() {
+			var thisvalue = $("#selectBar option:selected").text();
+			$('a#pagetitle').text(thisvalue);
+			//$('#pagetitle').text("option:selected");
+		});
+	});
+	</script>
 </head>
 <body onload="loadImage('Fertility.json')">
 	<div id="top">
@@ -110,10 +121,14 @@
     				.on("mouseover", function(d) {
     					d3.select(this).style('stroke-width', '2px')
     									.style('fill-opacity', 2);
+    					tooltip.select('label').html(d.data)
+    					tooltip.style('display', 'block');
+    					
     				})
 					.on("mouseout", function(d) {
 	 					d3.select(this).style('stroke-width', '1px')
 	 								.style('fill-opacity', 1);
+	 					tooltip.style('display', 'none');
 	 				})
 			});
 	}// loadImage()
@@ -137,8 +152,20 @@
 				}, 750);
 	}// changeDataset()
 			
-			var dropDown = document.getElementById("selectBar");
+	var dropDown = document.getElementById("selectBar");
 	
+	var tooltip = d3.select('#chart')
+		.append('div')
+		.attr('class', 'tooltip');
+	
+	tooltip.append('div')
+		.attr('class', 'label');
+	
+	tooltip.append('div')
+		.attr('class', 'count');
+	
+	tooltip.append('div')
+		.attr('class', 'percent');
 			
 			</script>
 	<br/>
