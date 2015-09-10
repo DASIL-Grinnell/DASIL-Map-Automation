@@ -32,6 +32,7 @@
 		<a id="pagetitle"> Fertility </a>
 	</div>
 	<br/>
+	<div id="tooltip"></div>
 	<script id="map">
 	
 	d3.csv("filelist.csv", function(data) {
@@ -46,6 +47,17 @@
 								return d.FileNames
 							});
 	});
+	
+	var tooltip = d3.select('body')
+		.append('div')
+		.attr('class', 'tooltip')
+		.data(json.features)
+		.enter()
+		.append("text")
+		.text(function (d) {
+			return json.properties.CNTRY_NAME + "/n" +
+					"Total Population: " + json.properties.TotPop;
+		});
 	
 	function loadImage(dataset) {
 		
@@ -121,14 +133,22 @@
     				.on("mouseover", function(d) {
     					d3.select(this).style('stroke-width', '2px')
     									.style('fill-opacity', 2);
-    					tooltip.select('label').html(d.data)
-    					tooltip.style('display', 'block');
+    					
+    					var tooltipDiv = document.getElementById('tooltip');
+    					tooltipDiv.innerHTML = d.id;
+    					tooltipDiv.style.display = "block";
+    					tooltip.style('display', 'block')
+    							.style('visibility', 'visible');
+    					
     					
     				})
 					.on("mouseout", function(d) {
 	 					d3.select(this).style('stroke-width', '1px')
 	 								.style('fill-opacity', 1);
-	 					tooltip.style('display', 'none');
+	 					tooltip.style('visibility', 'hidden');
+	 					
+	 					 var tooltipDiv = document.getElementById('tooltip');
+	 		               tooltipDiv.style.display = "none";
 	 				})
 			});
 	}// loadImage()
@@ -140,7 +160,7 @@
 			.duration(750)
 			.attr("height", 0)
 			setTimeout(function() {
-				d3.selectAll("#map")
+				d3.selectAll("body")
 					.transition()
 					.duration(200)
 					.style("opacity", 0);
@@ -153,21 +173,8 @@
 	}// changeDataset()
 			
 	var dropDown = document.getElementById("selectBar");
-	
-	var tooltip = d3.select('#chart')
-		.append('div')
-		.attr('class', 'tooltip');
-	
-	tooltip.append('div')
-		.attr('class', 'label');
-	
-	tooltip.append('div')
-		.attr('class', 'count');
-	
-	tooltip.append('div')
-		.attr('class', 'percent');
 			
-			</script>
+</script>
 	<br/>
 	<div id="interactive_panel">
 		<div id="optionmenu">
