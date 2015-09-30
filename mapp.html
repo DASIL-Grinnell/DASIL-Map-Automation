@@ -48,19 +48,20 @@
 							});
 	});
 	
-	var tooltip = d3.select('body')
+	var json = d3.json("World Population.json");
+	
+	var tooltip = d3.select('text')
 		.append('div')
-		.attr('class', 'tooltip')
-		.data(json.features)
-		.enter()
-		.append("text")
-		.text(function (d) {
-			return json.properties.CNTRY_NAME + "/n" +
-					"Total Population: " + json.properties.TotPop;
-		});
+		.attr('class', 'tooltip');
+		//.data(json.features)
+		//.enter()
+		//.append("text")
+		//.text(function (d) {
+		//	return json.properties.CNTRY_NAME + "/n" +
+		//			"Total Population: " + json.properties.TotPop;
+		//});
 	
 	function loadImage(dataset) {
-		
 			var margin = {
     			top: 20,
     			right: 10,
@@ -124,23 +125,18 @@
 						else {
 							return "grey";}
 						}) //missing data is grey
-				
-					.attr("id", function(d) {
-						return d.id; // <--Sets the idd
-					})
-								
-								
+													
     				.on("mouseover", function(d) {
     					d3.select(this).style('stroke-width', '2px')
     									.style('fill-opacity', 2);
+    					console.log(d3.select(this));
     					
     					var tooltipDiv = document.getElementById('tooltip');
-    					tooltipDiv.innerHTML = d.id;
+    					tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "\n" + 
+    						"Total Population: " + d.properties.TotPop;
     					tooltipDiv.style.display = "block";
-    					tooltip.style('display', 'block')
-    							.style('visibility', 'visible');
-    					
-    					
+    					//tooltipDiv.style.padding = "100px";
+    					//tooltipDiv.style.font-family = "Source Sans Pro";
     				})
 					.on("mouseout", function(d) {
 	 					d3.select(this).style('stroke-width', '1px')
