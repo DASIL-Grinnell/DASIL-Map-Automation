@@ -85,19 +85,29 @@ path:hover {
 	font-family: Source Sans Pro;
 }
 
+#selectBarColor {
+	margin-top: 10%;
+}
+
 #tooltip {
-	background: #eee;
-	box-shadow: 0 0 5px #999999;
+	background: #FFF;
 	color: #333;
 	display: none;
 	font-size: 12px;
 	left: 130px;
 	padding: 10px;
-	position: relative;
-	text-align: center;
+	position: absolute;
+	text-align: left;
 	top: 95px;
-	width: 80px;
+	width: 20%;
 	z-index: 10;
+	margin-top: 14%;
+	margin-right: 50%;
+	margin-left: -10%;
+	line-height: 350%;
+	font-family: "Source Sans Pro";
+	font-size: 110%;
+	
 }
 
 svg {
@@ -127,7 +137,8 @@ svg {
 }
 
 #keybox {
-	width:338px;height:22px;
+	width:338px;
+	height:22px;
  	background-color:#ffffcc;
  	margin-top: 20px;
  	filter:progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#ffffcc, endColorstr=#a1dab4);

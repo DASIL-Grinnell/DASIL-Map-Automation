@@ -36,7 +36,7 @@
 	<script id="map">
 	
 	d3.csv("filelist.csv", function(data) {
-		d3.select("select").selectAll("option")
+		d3.select("#selectBar").selectAll("option")
 							.data(data)
 							.enter()
 							.append("option")
@@ -44,7 +44,20 @@
 								return ("option" + i)
 							})
 							.text(function(d) {
-								return d.FileNames
+								return d.FileNames;
+							});
+	});
+	
+	d3.csv("Attributes.csv", function(data) {
+		d3.select("#selectBarColor").selectAll("option")
+							.data(data)
+							.enter()
+							.append("option")
+							.attr("id", function(d,i) {
+								return ("option" + i)
+							})
+							.text(function(d) {
+								return d.Attribute;
 							});
 	});
 	
@@ -53,13 +66,6 @@
 	var tooltip = d3.select('text')
 		.append('div')
 		.attr('class', 'tooltip');
-		//.data(json.features)
-		//.enter()
-		//.append("text")
-		//.text(function (d) {
-		//	return json.properties.CNTRY_NAME + "/n" +
-		//			"Total Population: " + json.properties.TotPop;
-		//});
 	
 	function loadImage(dataset) {
 			var margin = {
@@ -74,10 +80,6 @@
 			var padding = 50;
 			var var1 = [];
 			var color = [];
-			
-			/*var div = d3.select("body").append("div")
-				.attr("class", "tooltip")
-				.style("opacity", 0);*/
 		
 			var svg = d3.select("body").append("svg")
 				//a box to contain the map
@@ -132,12 +134,12 @@
     					console.log(d3.select(this));
     					
     					var tooltipDiv = document.getElementById('tooltip');
-    					tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "\n" + 
-    						"Total Population: " + d.properties.TotPop;
+    					// <! -- look up innerHTML in API -->
+    					tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" + 
+    						"Total Population: " + d.properties.TotPop + "<br />";
     					tooltipDiv.style.display = "block";
-    					//tooltipDiv.style.padding = "100px";
-    					//tooltipDiv.style.font-family = "Source Sans Pro";
     				})
+    				
 					.on("mouseout", function(d) {
 	 					d3.select(this).style('stroke-width', '1px')
 	 								.style('fill-opacity', 1);
@@ -148,9 +150,13 @@
 	 				})
 			});
 	}// loadImage()
+	
+	var dataSet="";
 			
 	function changeDataset(dataset) {
-		console.log(dataset);
+		
+		dataSet = d3.json(dataset + ".json");
+		
 		d3.selectAll("path")
 			.transition()
 			.duration(750)
@@ -159,16 +165,69 @@
 				d3.selectAll("body")
 					.transition()
 					.duration(200)
-					.style("opacity", 0);
+					//.style("opacity", 0)  <!-- caused the map AND grid to disappear on transition-->
 					setTimeout(function() {
 						d3.selectAll("#mySVG")/*.selectAll("*")*/.remove();
-						loadImage(dataset + ".json")
-							d3.selectAll("#map").transition().duration(200).style("opacity", 1)
+						loadImage(dataset + ".json"); 
+						d3.selectAll("#map").transition().duration(200).style("opacity", 1);
 						}, 450);
 				}, 750);
 	}// changeDataset()
+	
+	function changeAttribute(attribute) {
+		
+		for (var i = 0; i < dataSet.features.length; i++) {
+				var1[i] = dataSet.features[i].properties.attribute;
+			}
+		
+		//sets a quantized scale based on the automatically-calculated data range
+		var colorScale = d3.scale.quantize()
+						.range(['#ffffcc','#a1dab4',
+							'#41b6c4','#225ea8'])
+						.domain([d3.min(var1), d3.max(var1)]);
+		
+		//links the data variable to the color scale
+		for (var i = 0; i < dataSet.features.length; i++) {
+				color[i] = colorScale(var1[i]);
+			}
+		
+		d3.selectAll("path")
+			.attr("height", 0)
+			.on("mouseover", function(d) {
+    					d3.select(this).style('stroke-width', '2px')
+    									.style('fill-opacity', 2);
+    					console.log(d3.select(this));
+    					
+    					var tooltipDiv = document.getElementById('tooltip');
+    					// <! -- look up innerHTML in API -->
+    					tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" + 
+    						"Total Population: " + d.properties.TotPop + "<br />" +
+    						attribute + ": " + d.properites.attribute;
+    					tooltipDiv.style.display = "block";
+    				})
+    				
+			.on("mouseout", function(d) {
+	 					d3.select(this).style('stroke-width', '1px')
+	 								.style('fill-opacity', 1);
+	 					tooltip.style('visibility', 'hidden');
+	 					
+	 					 var tooltipDiv = document.getElementById('tooltip');
+	 		               tooltipDiv.style.display = "none";
+	 				})
+	 				
+			.attr("fill", function(json, i) {	
+				
+						if (var1[i] > 0) { 
+							return color[i];
+						}
+						else {
+							return "grey";
+							}
+						}) //missing data is grey				
+	}
 			
 	var dropDown = document.getElementById("selectBar");
+	var dropDownColor = document.getElementById("selectBarColor");
 			
 </script>
 	<br/>
@@ -176,8 +235,9 @@
 		<div id="optionmenu">
 				<select id="selectBar" onChange="changeDataset(this.options[this.selectedIndex].innerHTML);">
 				</select>
+				<select id="selectBarColor" onChange="changeAttribute(this.options[this.selectedIndex].innerHTML)"></select>
 		</div>
-		<div id="selected_country">
+		  <div id="selected_country">
 			<!-- grab text from d3js and display them here -->
 			<table>
 				<tr id="selected"> 
@@ -203,7 +263,7 @@
 					</td>
 				</tr>
 			</table>	
-		</div> <!--  selected_county -->
+		</div> <!--  selected_county --> 
 	</div> <!-- interactive panel -->
 </body>
 </html>
