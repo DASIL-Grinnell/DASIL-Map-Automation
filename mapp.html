@@ -1,7 +1,5 @@
-<!--  
-	September 1st, 2015:
-		Credit to Chris Kottle, who helped me resolve the URI and select issues I've had 
- -->
+ <!--  put in a key for the graph, only grabbing FeatureCollection 
+ 		put in a click function -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,13 +59,18 @@
 							});
 	});
 	
-	var json = d3.json("World Population.json");
+	var json = d3.json("World Population.json"); 
 	
 	var tooltip = d3.select('text')
 		.append('div')
 		.attr('class', 'tooltip');
 	
+	var currentjson = "";
+	
 	function loadImage(dataset) {
+		
+			currentjson = dataset;
+			
 			var margin = {
     			top: 20,
     			right: 10,
@@ -78,8 +81,9 @@
 			var h = window.innerHeight * 1 - margin.top - margin.bottom; 
 			var w = window.innerWidth * .75 - margin.left - margin.right;
 			var padding = 50;
-			var var1 = [];
+			var countryattr = [];
 			var color = [];
+			console.log("before accessing json: " + json);
 		
 			var svg = d3.select("body").append("svg")
 				//a box to contain the map
@@ -97,19 +101,19 @@
         			.translate(offset);
     			// create the path
     			var path = d3.geo.path().projection(projection);
-			
+    			
     			for (var i = 0; i < json.features.length; i++) {
-	 				var1[i] = json.features[i].properties.GDPpcap;
+	 				countryattr[i] = json.features[i].properties.GDPpcap;
 	 			}
 			
     			//sets a quantized scale based on the automatically-calculated data range
 				var colorScale = d3.scale.quantize()
     							.range(['#ffffcc','#a1dab4',
 									'#41b6c4','#225ea8'])
-    							.domain([d3.min(var1), d3.max(var1)]);
+    							.domain([d3.min(countryattr), d3.max(countryattr)]);
 				//links the data variable to the color scale
 				for (var i = 0; i < json.features.length; i++) {
-	 				color[i] = colorScale(var1[i]);
+	 				color[i] = colorScale(countryattr[i]);
 	 			}
 	 		
 				//makes the map
@@ -121,7 +125,7 @@
 					.attr("stroke", "black")
 					.attr("fill", function(json, i) {	
 				
-						if (var1[i] > 0) { 
+						if (countryattr[i] > 0) { 
 							return color[i];
 						}
 						else {
@@ -150,13 +154,9 @@
 	 				})
 			});
 	}// loadImage()
-	
-	var dataSet="";
 			
-	function changeDataset(dataset) {
-		
-		dataSet = d3.json(dataset + ".json");
-		
+	function changeDataset(dataset) {	
+		console.log("current dataset: " + currentjson);
 		d3.selectAll("path")
 			.transition()
 			.duration(750)
@@ -165,66 +165,89 @@
 				d3.selectAll("body")
 					.transition()
 					.duration(200)
-					//.style("opacity", 0)  <!-- caused the map AND grid to disappear on transition-->
 					setTimeout(function() {
-						d3.selectAll("#mySVG")/*.selectAll("*")*/.remove();
+						d3.selectAll("#mySVG").remove();
 						loadImage(dataset + ".json"); 
 						d3.selectAll("#map").transition().duration(200).style("opacity", 1);
 						}, 450);
 				}, 750);
+		console.log("done");
 	}// changeDataset()
 	
+	
+	// new game plan: use selected attribute to solve problem
 	function changeAttribute(attribute) {
+		var countryattr = [];
+		var color = [];
+		//grab data from current dataset
+		var dataset = currentjson;
 		
-		for (var i = 0; i < dataSet.features.length; i++) {
-				var1[i] = dataSet.features[i].properties.attribute;
+		var map = d3.json(dataset, function (json) {
+			console.log(json)
+			for (var i = 0; i < json.features.length; i++) {
+				countryattr[i] = json.features[i].properties[attribute];
+				console.log([i]);
 			}
-		
-		//sets a quantized scale based on the automatically-calculated data range
-		var colorScale = d3.scale.quantize()
+	
+			//sets a quantized scale based on the automatically-calculated data range
+			var colorScale = d3.scale.quantize()
 						.range(['#ffffcc','#a1dab4',
 							'#41b6c4','#225ea8'])
-						.domain([d3.min(var1), d3.max(var1)]);
-		
-		//links the data variable to the color scale
-		for (var i = 0; i < dataSet.features.length; i++) {
-				color[i] = colorScale(var1[i]);
+						.domain([d3.min(countryattr), d3.max(countryattr)]);
+			//links the data variable to the color scale
+			for (var i = 0; i < json.features.length; i++) {
+				color[i] = colorScale(countryattr[i]);
 			}
 		
+		
+		console.log(attribute);
 		d3.selectAll("path")
+			.transition()
+			.duration(750)
 			.attr("height", 0)
-			.on("mouseover", function(d) {
-    					d3.select(this).style('stroke-width', '2px')
-    									.style('fill-opacity', 2);
-    					console.log(d3.select(this));
-    					
-    					var tooltipDiv = document.getElementById('tooltip');
-    					// <! -- look up innerHTML in API -->
-    					tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" + 
-    						"Total Population: " + d.properties.TotPop + "<br />" +
-    						attribute + ": " + d.properites.attribute;
-    					tooltipDiv.style.display = "block";
-    				})
-    				
-			.on("mouseout", function(d) {
-	 					d3.select(this).style('stroke-width', '1px')
-	 								.style('fill-opacity', 1);
-	 					tooltip.style('visibility', 'hidden');
-	 					
-	 					 var tooltipDiv = document.getElementById('tooltip');
-	 		               tooltipDiv.style.display = "none";
-	 				})
-	 				
-			.attr("fill", function(json, i) {	
+			setTimeout(function() {
+				d3.selectAll("body")
+					.transition()
+					.duration(200)
+					setTimeout(function() {
+						d3.selectAll("path")
+							.attr("fill", function(json, i) {	
 				
-						if (var1[i] > 0) { 
-							return color[i];
-						}
-						else {
-							return "grey";
-							}
-						}) //missing data is grey				
-	}
+								if (countryattr[i] > 0) { 
+									return color[i];
+								}
+								else {
+									return "grey";
+								}
+							}) //missing data is grey
+						
+    						.on("mouseover", function(d) {
+    							d3.select(this).style('stroke-width', '2px')
+    								.style('fill-opacity', 2);
+    							console.log(d3.select(this));
+    					
+    							var tooltipDiv = document.getElementById('tooltip');
+
+    							tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" + 
+    								"Total Population: " + d.properties.TotPop + "<br />" + 
+    								attribute + ": " + d.properties[attribute];
+    								tooltipDiv.style.display = "block";
+    						})
+    				
+							.on("mouseout", function(d) {
+	 							d3.select(this).style('stroke-width', '1px')
+	 								.style('fill-opacity', 1);
+	 							tooltip.style('visibility', 'hidden');
+	 					
+	 					 		var tooltipDiv = document.getElementById('tooltip');
+	 		               		tooltipDiv.style.display = "none";
+	 						})
+					}, 450);
+			}, 750);
+		});
+   			console.log("done");
+
+	}// changeAttribute()
 			
 	var dropDown = document.getElementById("selectBar");
 	var dropDownColor = document.getElementById("selectBarColor");
@@ -252,14 +275,6 @@
 					</td>
 					<td class="tabp">
 						<!-- display country totpop data  -->
-					</td>
-				</tr>
-				<tr id="gdp"> 
-					<td class="tabp">
-						<p> GDP </p>
-					</td>
-					<td class="tabp">
-						<!-- display country gdp data  -->
 					</td>
 				</tr>
 			</table>	

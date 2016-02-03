@@ -1,9 +1,9 @@
-Attribute,
-Select an Attribute,
-Total Population,TotPop
-GDP per Capita,GDPpcap
-GDP   ,GDP 
-Internet Users,IntnetUser
-Average Alcohol Use,AlcohAdul
-CO2 per USD,CO2perUSD
-Post Secondary Graduation rate,RateEduGtB
+Attribute
+Select an Attribute
+TotPop
+GDPpcap
+GDP 
+IntnetUser
+AlcohAdul
+CO2perUSD
+RateEduGtB
