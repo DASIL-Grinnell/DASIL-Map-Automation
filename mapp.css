@@ -1,15 +1,5 @@
-a#pagetitle {
-   font-family: "Roboto Condensed", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
-   font-size: 40px;
-   font-weight: 400;
-   letter-spacing: -1px;
-   line-height: 1.2;
-   text-decoration: none;
-   font-style: normal;
-   text-transform: uppercase;
-   color: #404040;
-   float: right;
-   margin-right: 2%;
+body,html {
+	height: 100%;
 }
 
 @font-face {
@@ -26,14 +16,45 @@ a#pagetitle {
   src: local("Source Sans Pro"), local("SourceSansPro-Regular"), url("http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlOgEI-65pc1uHHusEBt4aX4.woff2") format("woff2"), url("http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlDLXPPWpYIJRcQ99gLLWTOQ.woff") format("woff");
 }
 
+#pagetitle {
+   font-family: "Roboto Condensed", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+   font-size: 40px;
+   font-weight: 400;
+   letter-spacing: -1px;
+   line-height: 1.2;
+   text-decoration: none;
+   font-style: normal;
+   text-transform: uppercase;
+   color: #404040;
+   float: right;
+   margin-right: 2%;
+   margin-top: 10%;
+}
+
 #bod {
 	float: right;
 }
 
-credit {
+#credit {
 	margin-top:10%;
 	font-family: "Source Sans Pro";
 	color: #767676;
+}
+
+#circular_interactive_menu {
+	background-image:
+		linear-gradient(
+			to top right,
+			#222222, #000066); 
+	border-radius: 50%;
+	height: 300px;
+	width: 300px;
+	margin-top: -40%;
+	margin-left: -25%;
+}
+
+#credit {
+	inline-block
 }
 
 .date {
@@ -76,6 +97,23 @@ path:hover {
 	position: relative; 
 }
 
+#option_menu {
+	margin-top: -7%;
+	margin-right: 15%;
+}
+
+#selectBar {
+	margin-left: 12%;
+	position: absolute;
+}
+
+#selectBarColor {
+	margin-top: -5%;
+	position: absolute;
+	margin-left: 16%;
+}
+
+
 #selectedheader {
 	font-family: Source Sans Pro;
 	text-decoration: bold;
@@ -85,9 +123,7 @@ path:hover {
 	font-family: Source Sans Pro;
 }
 
-#selectBarColor {
-	margin-top: 10%;
-}
+
 
 #tooltip {
 	background: #FFF;
@@ -101,7 +137,7 @@ path:hover {
 	top: 95px;
 	width: 20%;
 	z-index: 10;
-	margin-top: 14%;
+	margin-top: 16%;
 	margin-right: 50%;
 	margin-left: -10%;
 	line-height: 350%;
@@ -113,8 +149,8 @@ path:hover {
 svg {
 	float: right;
 	width: 67%;
-	height: 32.5em;
-	margin-top: -41%;
+	height: 28em;
+	margin-top: -58%;
 }
 
 .country {

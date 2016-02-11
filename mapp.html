@@ -21,20 +21,40 @@
 	</script>
 </head>
 <body onload="loadImage('Fertility.json')">
-	<div id="top">
-		<div id="credit">
-			<p class="date"> August 20, 2015 </p>
-			<p class="by">by</p>
-			<p class="id"> Amanda Hinchman-Dominguez, Student, Grinnell College </p>
-		</div> 
-		<a id="pagetitle"> Fertility </a>
-	</div>
+	<a id="pagetitle"> Fertility </a>
+	<div id="interactive_panel">
+		<div id="circular_interactive_menu">
+
+		</div> <!-- circular_interactive_menu -->
+		<div id="option_menu">
+			<select id="selectBar" onChange="changeDataset(this.options[this.selectedIndex].innerHTML);"></select>
+			<select id="selectBarColor" onChange="changeAttribute(this.options[this.selectedIndex].innerHTML)"></select>
+		</div> <!-- option_menu -->
+
+		<!-- grab text from d3js and display them here -->
+	    <div id="selected_country">
+			<table>
+				<tr id="selected"> 
+					<!--  display name of hovered country -->
+					<th id="selectedheader" class="datum">
+						<h3> Selected Country </h3>
+					</th>
+				</tr>
+				<tr id="totalpop"> 
+					<!-- display population attribute of selected country -->
+					<td class="tabp">
+						<p> Total Population </p>
+					</td>
+				</tr>
+			</table>	
+		</div> <!--  selected_county --> 
+	</div> <!--interactive_panel -->	
 	<br/>
 	<div id="tooltip"></div>
 	<script id="map">
 	
-	d3.csv("filelist.csv", function(data) {
-		d3.select("#selectBar").selectAll("option")
+		d3.csv("filelist.csv", function(data) {
+			d3.select("#selectBar").selectAll("option")
 							.data(data)
 							.enter()
 							.append("option")
@@ -44,10 +64,10 @@
 							.text(function(d) {
 								return d.FileNames;
 							});
-	});
+		});
 	
-	d3.csv("Attributes.csv", function(data) {
-		d3.select("#selectBarColor").selectAll("option")
+		d3.csv("Attributes.csv", function(data) {
+			d3.select("#selectBarColor").selectAll("option")
 							.data(data)
 							.enter()
 							.append("option")
@@ -57,17 +77,17 @@
 							.text(function(d) {
 								return d.Attribute;
 							});
-	});
+		});
 	
-	var json = d3.json("World Population.json"); 
+		var json = d3.json("World Population.json"); 
 	
-	var tooltip = d3.select('text')
-		.append('div')
-		.attr('class', 'tooltip');
+		var tooltip = d3.select('text')
+							.append('div')
+							.attr('class', 'tooltip');
 	
-	var currentjson = "";
+		var currentjson = "";
 	
-	function loadImage(dataset) {
+		function loadImage(dataset) {
 		
 			currentjson = dataset;
 			
@@ -78,8 +98,8 @@
     			left: 50
 			};
 		
-			var h = window.innerHeight * 1 - margin.top - margin.bottom; 
-			var w = window.innerWidth * .75 - margin.left - margin.right;
+			var h = window.innerHeight * .03 - margin.top - margin.bottom; 
+			var w = window.innerWidth * 1 - margin.left - margin.right;
 			var padding = 50;
 			var countryattr = [];
 			var color = [];
@@ -88,20 +108,38 @@
 			var svg = d3.select("body").append("svg")
 				//a box to contain the map
 				.attr("id", "mySVG")
-    			.attr("width", w + margin.left + margin.right)
-    			.attr("height", h + (margin.top*2) + (margin.bottom*2))
+    			.attr("width", w)
+    			.attr("height", h)
     			.style("border", "2px solid black");
 				//accesses the json and creates a projection
 			var map = d3.json(dataset, function (json) {
     			// create a first guess for the projection
     			var center = d3.geo.centroid(json);
     			var scale = 140;
-    			var offset = [w / 2 + (margin.top*8), h / 2];
+    			var offset = [w / 2 + (margin.top*8), h / 2 + (margin.top*8)];
     			var projection = d3.geo.mercator().scale(scale).center(center)
         			.translate(offset);
+
     			// create the path
     			var path = d3.geo.path().projection(projection);
     			
+    			// using the path to determine the bounds of the current
+    			// bounds of the current map and use these to determine
+    			// better values for scale and translation
+    			var bounds = path.bounds(json);
+    			var hscale = scale*w / (bounds[1][0] + bounds[0][0]);
+    			var vscale = scale*w / (bounds[1][1] - bounds[0][1]);
+    			var scale = (hscale < vscale) ? hscale : vscale;
+    			var offset = [w - (bounds[0][0] + bounds[1][0])/2, 
+    									h - (bounds[0][1] - bounds[1][1])/2];
+    			//NOTE: FIX OFFSET BUT I THINK ITS PERMANENT NOW
+
+    			// new projection
+    			projection = d3.geo.mercator().center(center)
+    							.scale(scale).translate(offset);
+    			path = path.projection(projection);
+
+
     			for (var i = 0; i < json.features.length; i++) {
 	 				countryattr[i] = json.features[i].properties.GDPpcap;
 	 			}
@@ -153,40 +191,38 @@
 	 		               tooltipDiv.style.display = "none";
 	 				})
 			});
-	}// loadImage()
+		}// loadImage()
 			
-	function changeDataset(dataset) {	
-		console.log("current dataset: " + currentjson);
-		d3.selectAll("path")
-			.transition()
-			.duration(750)
-			.attr("height", 0)
-			setTimeout(function() {
-				d3.selectAll("body")
-					.transition()
-					.duration(200)
-					setTimeout(function() {
-						d3.selectAll("#mySVG").remove();
-						loadImage(dataset + ".json"); 
-						d3.selectAll("#map").transition().duration(200).style("opacity", 1);
-						}, 450);
-				}, 750);
-		console.log("done");
-	}// changeDataset()
+		function changeDataset(dataset) {	
+			console.log("current dataset: " + currentjson);
+			d3.selectAll("path")
+				.transition()
+				.duration(750)
+				.attr("height", 0)
+				setTimeout(function() {
+					d3.selectAll("body")
+						.transition()
+						.duration(200)
+						setTimeout(function() {
+							d3.selectAll("#mySVG").remove();
+							loadImage(dataset + ".json"); 
+							d3.selectAll("#map").transition().duration(200).style("opacity", 1);
+							}, 450);
+					}, 750);
+			console.log("done");
+		}// changeDataset()
 	
-	
-	// new game plan: use selected attribute to solve problem
-	function changeAttribute(attribute) {
-		var countryattr = [];
-		var color = [];
-		//grab data from current dataset
-		var dataset = currentjson;
+		function changeAttribute(attribute) {
+			var countryattr = [];
+			var color = [];
+			//grab data from current dataset
+			var dataset = currentjson;
 		
-		var map = d3.json(dataset, function (json) {
-			console.log(json)
-			for (var i = 0; i < json.features.length; i++) {
-				countryattr[i] = json.features[i].properties[attribute];
-				console.log([i]);
+			var map = d3.json(dataset, function (json) {
+				console.log(json)
+				for (var i = 0; i < json.features.length; i++) {
+					countryattr[i] = json.features[i].properties[attribute];
+					console.log([i]);
 			}
 	
 			//sets a quantized scale based on the automatically-calculated data range
@@ -200,85 +236,62 @@
 			}
 		
 		
-		console.log(attribute);
-		d3.selectAll("path")
-			.transition()
-			.duration(750)
-			.attr("height", 0)
-			setTimeout(function() {
-				d3.selectAll("body")
-					.transition()
-					.duration(200)
-					setTimeout(function() {
-						d3.selectAll("path")
-							.attr("fill", function(json, i) {	
+			console.log(attribute);
+			d3.selectAll("path")
+				.transition()
+				.duration(750)
+				.attr("height", 0)
+				setTimeout(function() {
+					d3.selectAll("body")
+						.transition()
+						.duration(200)
+						setTimeout(function() {
+							d3.selectAll("path")
+								.attr("fill", function(json, i) {	
 				
-								if (countryattr[i] > 0) { 
-									return color[i];
-								}
-								else {
-									return "grey";
-								}
-							}) //missing data is grey
+									if (countryattr[i] > 0) { 
+										return color[i];
+									}
+									else {
+										return "grey";
+									}
+								}) //missing data is grey
 						
-    						.on("mouseover", function(d) {
-    							d3.select(this).style('stroke-width', '2px')
+    							.on("mouseover", function(d) {
+    								d3.select(this).style('stroke-width', '2px')
     								.style('fill-opacity', 2);
-    							console.log(d3.select(this));
+    								console.log(d3.select(this));
     					
-    							var tooltipDiv = document.getElementById('tooltip');
+    								var tooltipDiv = document.getElementById('tooltip');
 
-    							tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" + 
-    								"Total Population: " + d.properties.TotPop + "<br />" + 
+    								tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" +
+    								"Total Population: " + d.properties.TotPop + "<br />" +
     								attribute + ": " + d.properties[attribute];
     								tooltipDiv.style.display = "block";
-    						})
+    							})
     				
-							.on("mouseout", function(d) {
-	 							d3.select(this).style('stroke-width', '1px')
+								.on("mouseout", function(d) {
+	 								d3.select(this).style('stroke-width', '1px')
 	 								.style('fill-opacity', 1);
-	 							tooltip.style('visibility', 'hidden');
+	 								tooltip.style('visibility', 'hidden');
 	 					
-	 					 		var tooltipDiv = document.getElementById('tooltip');
-	 		               		tooltipDiv.style.display = "none";
-	 						})
-					}, 450);
-			}, 750);
-		});
+	 					 			var tooltipDiv = document.getElementById('tooltip');
+	 		               			tooltipDiv.style.display = "none";
+	 							})
+						}, 450);
+				}, 750);
+			});
    			console.log("done");
-
-	}// changeAttribute()
+		}// changeAttribute()
 			
-	var dropDown = document.getElementById("selectBar");
-	var dropDownColor = document.getElementById("selectBarColor");
+		var dropDown = document.getElementById("selectBar");
+		var dropDownColor = document.getElementById("selectBarColor");
 			
-</script>
-	<br/>
-	<div id="interactive_panel">
-		<div id="optionmenu">
-				<select id="selectBar" onChange="changeDataset(this.options[this.selectedIndex].innerHTML);">
-				</select>
-				<select id="selectBarColor" onChange="changeAttribute(this.options[this.selectedIndex].innerHTML)"></select>
-		</div>
-		  <div id="selected_country">
-			<!-- grab text from d3js and display them here -->
-			<table>
-				<tr id="selected"> 
-					<th id="selectedheader" class="datum">
-						<h3> Selected Country </h3>
-						<!--  display name of hovered country -->
-					</th>
-				</tr>
-				<tr id="totalpop"> 
-					<td class="tabp">
-						<p> Total Population </p>
-					</td>
-					<td class="tabp">
-						<!-- display country totpop data  -->
-					</td>
-				</tr>
-			</table>	
-		</div> <!--  selected_county --> 
-	</div> <!-- interactive panel -->
+	</script>
+	<div id="credit">
+		<p class="date"> August 20, 2015 </p>
+		<p class="by">by</p>
+		<p class="id"> Amanda Hinchman-Dominguez, Student, Grinnell College </p>
+	</div> 
 </body>
 </html>
