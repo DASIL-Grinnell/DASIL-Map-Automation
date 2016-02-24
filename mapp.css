@@ -1,7 +1,3 @@
-body,html {
-	height: 100%;
-}
-
 @font-face {
   font-family: 'Roboto Condensed';
   font-style: normal;
@@ -36,9 +32,11 @@ body,html {
 }
 
 #credit {
-	margin-top:10%;
 	font-family: "Source Sans Pro";
 	color: #767676;
+	position: absolute;
+	margin-left: 50%;
+	margin-top: 9%;
 }
 
 #circular_interactive_menu {
@@ -49,12 +47,15 @@ body,html {
 	border-radius: 50%;
 	height: 300px;
 	width: 300px;
-	margin-top: -40%;
-	margin-left: -25%;
 }
 
-#credit {
-	inline-block
+#under_circular {
+	background: #222; 
+	border-radius: 50%;
+	height: 500px;
+	width: 500px;
+	margin-top: -40%;
+	margin-left: -25%;
 }
 
 .date {
@@ -126,8 +127,11 @@ path:hover {
 
 
 #tooltip {
-	background: #FFF;
-	color: #333;
+	background-image:
+		linear-gradient(
+			to top right,
+			#222222, #666666); 
+	color: #FFF;
 	display: none;
 	font-size: 12px;
 	left: 130px;
@@ -150,7 +154,8 @@ svg {
 	float: right;
 	width: 67%;
 	height: 28em;
-	margin-top: -58%;
+	margin-top: -30%;
+	background: white;
 }
 
 .country {
@@ -188,7 +193,7 @@ svg {
  
  table {
  	margin-top: 23%;
- 	margin-left: 5%;
+ 	margin-left: 25%;
  	padding-bottom: 50%;
  	padding-top: 10%;
  	
@@ -226,4 +231,15 @@ svg {
 	margin-left: 15%;
 	float: left;
 	margin-right: 10px;
+}
+
+#selectBar, #selectBarColor {
+ -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   padding: 5px;
+   border-radius: 5px;
+   background: #222;
+   font-size: 1.2em; 
+   color: white;
 }
