@@ -15,7 +15,6 @@
 		$("select#selectBar").change(function() {
 			var thisvalue = $("#selectBar option:selected").text();
 			$('a#pagetitle').text(thisvalue);
-			//$('#pagetitle').text("option:selected");
 		});
 	});
 	</script>
@@ -23,8 +22,7 @@
 <body onload="loadImage('Fertility.json')">
 	<a id="pagetitle"> Fertility </a>
 	<div id="interactive_panel">
-		<div id="under_circular">
-		<div id="circular_interactive_menu">
+		<div id="interactive_menu">
 
 		</div> <!-- circular_interactive_menu -->
 		<div id="option_menu">
@@ -33,22 +31,7 @@
 		</div> <!-- option_menu -->
 
 		<!-- grab text from d3js and display them here -->
-	    <div id="selected_country">
-			<table>
-				<tr id="selected"> 
-					<!--  display name of hovered country -->
-					<th id="selectedheader" class="datum">
-						<h3> Selected Country </h3>
-					</th>
-				</tr>
-				<tr id="totalpop"> 
-					<!-- display population attribute of selected country -->
-					<td class="tabp">
-						<p> Total Population </p>
-					</td>
-				</tr>
-			</table>	
-		</div> <!--  selected_county --> 
+
 	</div> <!--interactive_panel -->	
 	<br/>
 	<div id="tooltip"></div>
@@ -154,6 +137,8 @@
 				for (var i = 0; i < json.features.length; i++) {
 	 				color[i] = colorScale(countryattr[i]);
 	 			}
+
+	 			var lock;
 	 		
 				//makes the map
 				svg.selectAll("path")
@@ -182,14 +167,33 @@
     						"Total Population: " + d.properties.TotPop + "<br />";
     					tooltipDiv.style.display = "block";
     				})
-    				
-					.on("mouseout", function(d) {
+    			
+    				.on("click", function(d) {
 	 					d3.select(this).style('stroke-width', '1px')
+	 							.style('fill-opacity', 1);
+	 					console.log("item clicked");
+	 					lock = true;
+	 					var tooltipDiv = document.getElementById('tooltip');
+	 					tooltipDiv.style.display = "block";
+	 				})
+
+					.on("mouseout", function(d) {
+						if (lock == true) {
+							d3.select(this).style('stroke-width', '1px')
+	 							.style('fill-opacity', 1);
+	 						console.log("item clicked");
+	 						lock = true;
+	 						var tooltipDiv = document.getElementById('tooltip');
+	 						tooltipDiv.style.display = "block";
+						}
+						else {
+	 						d3.select(this).style('stroke-width', '1px')
 	 								.style('fill-opacity', 1);
-	 					tooltip.style('visibility', 'hidden');
+	 						tooltip.style('visibility', 'hidden');
 	 					
-	 					 var tooltipDiv = document.getElementById('tooltip');
-	 		               tooltipDiv.style.display = "none";
+	 						 var tooltipDiv = document.getElementById('tooltip');
+	 		             	  tooltipDiv.style.display = "none";
+						}
 	 				})
 			});
 		}// loadImage()
@@ -294,6 +298,5 @@
 		<p class="by">by</p>
 		<p class="id"> Amanda Hinchman-Dominguez, Student, Grinnell College </p>
 	</div> 
-	</div>
 </body>
 </html>

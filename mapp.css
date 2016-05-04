@@ -24,7 +24,7 @@
    color: #404040;
    float: right;
    margin-right: 2%;
-   margin-top: 10%;
+   margin-top: -4%;
 }
 
 #bod {
@@ -36,26 +36,20 @@
 	color: #767676;
 	position: absolute;
 	margin-left: 50%;
-	margin-top: 9%;
+	margin-top: -9%;
 }
 
-#circular_interactive_menu {
+#interactive_menu {
 	background-image:
 		linear-gradient(
 			to top right,
 			#222222, #000066); 
-	border-radius: 50%;
-	height: 300px;
-	width: 300px;
-}
-
-#under_circular {
-	background: #222; 
-	border-radius: 50%;
-	height: 500px;
-	width: 500px;
-	margin-top: -40%;
-	margin-left: -25%;
+	line-height: 1.45;
+	width: 110%;
+	height: 50px;
+	position: absolute;
+	top: 0px;
+	margin-left: -5%;
 }
 
 .date {
@@ -90,8 +84,9 @@ path:hover {
 
 #interactive_panel {
 	width:27%;
-    margin-right: 15px;
-    margin-top: 5%;
+    margin-left: 2%;
+    margin-top: 10%;
+    background: #222222; 
 }
 
 #somanydivs {
@@ -104,14 +99,13 @@ path:hover {
 }
 
 #selectBar {
-	margin-left: 12%;
-	position: absolute;
+	margin-left: 5%;
+	margin-top: 5%;
 }
 
 #selectBarColor {
-	margin-top: -5%;
-	position: absolute;
-	margin-left: 16%;
+	margin-right: 5%;
+	margin-top: 5%;
 }
 
 
@@ -154,8 +148,8 @@ svg {
 	float: right;
 	width: 67%;
 	height: 28em;
-	margin-top: -30%;
-	background: white;
+	margin-top: -5%;
+	background: #eee;
 }
 
 .country {
@@ -242,4 +236,12 @@ svg {
    background: #222;
    font-size: 1.2em; 
    color: white;
+}
+
+#selectBar {
+	margin-left: 5%;
+}
+
+#selectBarColor {
+	margin-right: -30%;
 }
