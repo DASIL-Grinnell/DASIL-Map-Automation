@@ -83,10 +83,10 @@ path:hover {
 }
 
 #interactive_panel {
-	width:27%;
+	width: 27%;
     margin-left: 2%;
     margin-top: 10%;
-    background: #222222; 
+    background: #eee; 
 }
 
 #somanydivs {
@@ -103,12 +103,6 @@ path:hover {
 	margin-top: 5%;
 }
 
-#selectBarColor {
-	margin-right: 5%;
-	margin-top: 5%;
-}
-
-
 #selectedheader {
 	font-family: Source Sans Pro;
 	text-decoration: bold;
@@ -118,26 +112,21 @@ path:hover {
 	font-family: Source Sans Pro;
 }
 
-
-
 #tooltip {
-	background-image:
-		linear-gradient(
-			to top right,
-			#222222, #666666); 
-	color: #FFF;
-	display: none;
+	background: #eee; 
+	color: #464646;
+	display: block;
 	font-size: 12px;
 	left: 130px;
-	padding: 10px;
+	padding: 40px;
 	position: absolute;
 	text-align: left;
 	top: 95px;
 	width: 20%;
 	z-index: 10;
-	margin-top: 16%;
+	margin-top: 8%;
 	margin-right: 50%;
-	margin-left: -10%;
+	margin-left: -8%;
 	line-height: 350%;
 	font-family: "Source Sans Pro";
 	font-size: 110%;
@@ -148,7 +137,7 @@ svg {
 	float: right;
 	width: 67%;
 	height: 28em;
-	margin-top: -5%;
+	margin-top: -6%;
 	background: #eee;
 }
 
@@ -228,13 +217,24 @@ svg {
 }
 
 #selectBar, #selectBarColor {
- -webkit-appearance: none;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   padding: 5px;
+   border-radius: 5px;
+   background: #f6f6f6;
+   font-size: 1em; 
+   color: #404040;
+}
+
+#selectBar:hover , #selectBarColor:hover {
+   -webkit-appearance: none;
    -moz-appearance: none;
    appearance: none;
    padding: 5px;
    border-radius: 5px;
    background: #222;
-   font-size: 1.2em; 
+   font-size: 1em; 
    color: white;
 }
 
@@ -243,5 +243,6 @@ svg {
 }
 
 #selectBarColor {
-	margin-right: -30%;
+	margin-left: 58%;
+	margin-bottom: -18%;
 }
