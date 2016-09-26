@@ -10,6 +10,7 @@
 	<link type="text/css" rel="stylesheet" href="mapp.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
 	<script>
 	$(document).ready(function() {
 		$("select#selectBar").change(function() {
@@ -31,11 +32,10 @@
 		</div> <!-- option_menu -->
 
 		<!-- grab text from d3js and display them here -->
-
-	</div> <!--interactive_panel -->	
-	<br/>
-	<div id="tooltip"></div>
-	<div id="tooltipSelect"></div>
+		<br/>
+		<div id="tooltip"></div>
+		<div id="tooltipSelect"></div>
+	</div> <!--ninterative panel -->
 	<script id="map">
 	
 		d3.csv("filelist.csv", function(data) {
@@ -140,6 +140,57 @@
 				for (var i = 0; i < json.features.length; i++) {
 	 				color[i] = colorScale(countryattr[i]);
 	 			}
+
+
+	 			//sets a quantized scale based on the automatically-calculated data range
+			var colorScale = d3.scale.quantize()
+						.range(['#ffffcc','#a1dab4',
+							'#41b6c4','#225ea8'])
+						.domain([d3.min(countryattr), d3.max(countryattr)]);
+				  
+			//links the data variable to the color scale
+			for (var i = 0; i < json.features.length; i++) {
+				color[i] = colorScale(countryattr[i]);
+			}
+			
+			var domainRange=d3.max(countryattr)-d3.min(countryattr);
+			var domainDiff=(d3.max(countryattr)-d3.min(countryattr))/4;
+			var legendLabel={};
+				
+			for (i=0;i<colorScale.range().length;i++) {
+				legendLabel[i]=(d3.min(countryattr)+domainDiff*i).toFixed(2)+" to "+(d3.min(countryattr)+domainDiff*(i+1)).toFixed(2);
+					 console.log(legendLabel[i]);
+			};
+					 
+				// Add legend 
+				var svg=d3.selectAll("#mySVG");
+				    svg.selectAll('.legend')
+					   .remove();
+                var legend=svg.selectAll('.legend')
+				             .data(colorScale.range())
+                             .enter()
+                             .append("g")
+                             .attr("class","legend");
+							 
+                     legend.append("rect")
+                             .attr("x",20)	
+                             .attr("y",function(d,i){
+							 return 10+i*40;
+							 })							 
+				             .attr("width",30)
+							 .attr("height",40)
+							 .style("fill",function(d,i){
+							 return colorScale.range()[i];
+							 });
+					 legend.append("text")
+					         .attr("x",60)
+							 .attr("y",function(d,i){
+							 return 35+i*40;
+							 })
+					         .text(function(d,i){
+							     return legendLabel[i];
+							 });
+
 	 			var lock;
 	 		
 				//makes the map
@@ -190,7 +241,6 @@
     			
     				.on("click", function(d) {
     					var dis = d3.select(this);
-    					if (!lock) {
 	 						currentpath = dis.style('stroke-width', '1px')
 	 							.style('fill-opacity', 2);
 	 						console.log("item clicked");
@@ -201,9 +251,6 @@
     						"Selected Country: " + d.properties.CNTRY_NAME + "<br/>" + 
     						"Total Population: " + d.properties.TotPop + "<br/>" +
     						"GDP per Capita: " + d.properties.GDPpcap + "<br/>";
-	 					} else {
-	 						lock = false;
-	 					}
 	 				})
 
 					.on("mouseout", function(d) {
