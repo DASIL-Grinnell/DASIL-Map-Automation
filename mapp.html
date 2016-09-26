@@ -70,7 +70,6 @@
 							.attr('class', 'tooltip');
 	
 		var currentjson = "";
-		var lock;
 	
 		function loadImage(dataset) {
 		
@@ -104,7 +103,6 @@
     			var offset = [w / 2 + (margin.top*8), h / 2 + (margin.top*8)];
     			var projection = d3.geo.mercator().scale(scale).center(center)
         			.translate(offset);
-
     			// create the path
     			var path = d3.geo.path().projection(projection);
     			
@@ -118,13 +116,10 @@
     			var offset = [w - (bounds[0][0] + bounds[1][0])/2, 
     									h - (bounds[0][1] - bounds[1][1])/2];
     			//NOTE: FIX OFFSET BUT I THINK ITS PERMANENT NOW
-
     			// new projection
     			projection = d3.geo.mercator().center(center)
     							.scale(scale).translate(offset);
     			path = path.projection(projection);
-
-
     			for (var i = 0; i < json.features.length; i++) {
 	 				countryattr[i] = json.features[i].properties.GDPpcap;
 	 			}
@@ -138,12 +133,7 @@
 				for (var i = 0; i < json.features.length; i++) {
 	 				color[i] = colorScale(countryattr[i]);
 	 			}
-
-	 			
-
-	 			//creates the key for the map
-	 			var key = svg.append("rect")
-	 				.attr
+	 			var lock;
 	 		
 				//makes the map
 				svg.selectAll("path")
@@ -160,58 +150,50 @@
 						else {
 							return "grey";}
 						}) //missing data is grey
-
-					.on("dblclick", function(d) {
-						d3.select(this).style('stroke-width', '1px')
-	 							.style('fill-opacity', 2);
-	 					console.log("item clicked");
-	 					lock = true;
-	 					console.log("lock = " + lock);
-	 					var tooltipDiv = document.getElementById('tooltip');
-	 					d3.event.stopPropogation;
-					})
-
-					.on("click", function(d) {
-	 					d3.select(this).style('stroke-width', '1px')
-	 								.style('fill-opacity', 1);
-	 						tooltip.style('visibility', 'hidden');
-	 					
-	 						 var tooltipDiv = document.getElementById('tooltip');
-	 		             	  tooltipDiv.style.display = "none";
-	 				})
 													
     				.on("mouseover", function(d) {
-    					if (lock == true) {
-    		
-    					}
-    					else {
-    					d3.select(this).style('stroke-width', '2px')
+    					if (lock) {
+    						d3.event.stopPropagation();
+    					} else {
+    						d3.select(this).style('stroke-width', '2px')
     									.style('fill-opacity', 2);
     						console.log(d3.select(this));
     					
-    					var tooltipDiv = document.getElementById('tooltip');
-    					// <! -- look up innerHTML in API -->
-    					tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" + 
-    						"Total Population: " + d.properties.TotPop + "<br />";
+    						var tooltipDiv = document.getElementById('tooltip');
+    						tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br/>" + 
+    						"Total Population: " + d.properties.TotPop + "<br/>";
+    						tooltipDiv.style.display = "block";
     					}
-   
     				})
+    			
+    				.on("click", function(d) {
+    					if (!lock) {
+	 						d3.select(this).style('stroke-width', '1px')
+	 							.style('fill-opacity', 1);
+	 						console.log("item clicked");
+	 						lock = true;
+	 						var tooltipDiv = document.getElementById('tooltip');
+	 						tooltipDiv.style.display = "block";
+	 					} else {
+	 						lock = false;
+	 					}
+	 				})
 
 					.on("mouseout", function(d) {
-						if (lock == true) {
+						if (lock) {
 							d3.select(this).style('stroke-width', '1px')
 	 							.style('fill-opacity', 1);
 	 						console.log("item clicked");
 	 						lock = true;
 	 						var tooltipDiv = document.getElementById('tooltip');
 	 						tooltipDiv.style.display = "block";
-						}
-						else {
+						} else {
 	 						d3.select(this).style('stroke-width', '1px')
 	 								.style('fill-opacity', 1);
 	 						tooltip.style('visibility', 'hidden');
 	 					
 	 						 var tooltipDiv = document.getElementById('tooltip');
+	 		             	  tooltipDiv.style.display = "none";
 						}
 	 				})
 			});
@@ -280,51 +262,27 @@
 										return "grey";
 									}
 								}) //missing data is grey
-
-						.on("dblclick", function(d) {
-							d3.select(this).style('stroke-width', '1px')
-	 							.style('fill-opacity', 2);
-	 						console.log("item clicked");
-	 						lock = true;
-	 						console.log("lock = " + lock);
-	 						var tooltipDiv = document.getElementById('tooltip');
-	 						d3.event.stopPropogation;
-						})
-
-						.on("click", function(d) {
-	 						d3.select(this).style('stroke-width', '1px')
-	 								.style('fill-opacity', 1);
-	 						tooltip.style('visibility', 'hidden');
-	 					
-	 						 var tooltipDiv = document.getElementById('tooltip');
-	 		             	  tooltipDiv.style.display = "none";
-	 					})
 						
-    					.on("mouseover", function(d) {
-    						d3.select(this).style('stroke-width', '2px')
-    							.style('fill-opacity', 2);
-    						console.log(d3.select(this));
+    							.on("mouseover", function(d) {
+    								d3.select(this).style('stroke-width', '2px')
+    								.style('fill-opacity', 2);
+    								console.log(d3.select(this));
     					
-    						var tooltipDiv = document.getElementById('tooltip');
-
-    						tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" +
+    								var tooltipDiv = document.getElementById('tooltip');
+    								tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br />" +
     								"Total Population: " + d.properties.TotPop + "<br />" +
     								attribute + ": " + d.properties[attribute];
-    						})
+    								tooltipDiv.style.display = "block";
+    							})
     				
-							.on("mouseout", function(d) {
-								if (lock) {
-									d3.select.stopPropogation
-								}
-	 							else {
+								.on("mouseout", function(d) {
 	 								d3.select(this).style('stroke-width', '1px')
-	 									.style('fill-opacity', 1);
-	 									tooltip.style('visibility', 'hidden');
+	 								.style('fill-opacity', 1);
+	 								tooltip.style('visibility', 'hidden');
 	 					
 	 					 			var tooltipDiv = document.getElementById('tooltip');
-	 								}
+	 		               			tooltipDiv.style.display = "none";
 	 							})
-
 						}, 450);
 				}, 750);
 			});

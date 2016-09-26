@@ -118,7 +118,8 @@ path:hover {
 	display: block;
 	font-size: 12px;
 	left: 130px;
-	padding: 40px;
+	padding-left: 40px;
+	padding-right: 40px;
 	position: absolute;
 	text-align: left;
 	top: 95px;
