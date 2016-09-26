@@ -35,6 +35,7 @@
 	</div> <!--interactive_panel -->	
 	<br/>
 	<div id="tooltip"></div>
+	<div id="tooltipSelect"></div>
 	<script id="map">
 	
 		d3.csv("filelist.csv", function(data) {
@@ -68,6 +69,12 @@
 		var tooltip = d3.select('text')
 							.append('div')
 							.attr('class', 'tooltip');
+
+		var tooltipSelect = d3.select('text')
+								.append('div')
+								.attr('class', 'tooltipSelect');
+
+		var currentpath = "";
 	
 		var currentjson = "";
 	
@@ -152,28 +159,48 @@
 						}) //missing data is grey
 													
     				.on("mouseover", function(d) {
+    					var dis = d3.select(this);
     					if (lock) {
     						d3.event.stopPropagation();
+    						dis.style('stroke-width', '2px')
+    							.style('fill-opacity', 2);
+    						console.log(dis);
+    						var tooltipSel = document.getElementById('tooltipSelect');
+    						tooltipSel.innerHTML = d.properties.CNTRY_NAME + "<br/>" + 
+    						"Total Population: " + d.properties.TotPop + "<br/>";
+    						tooltipSel.style.display = "block"; 
+
     					} else {
-    						d3.select(this).style('stroke-width', '2px')
-    									.style('fill-opacity', 2);
-    						console.log(d3.select(this));
-    					
+    						dis.style('stroke-width', '2px')
+    							.style('fill-opacity', 2);
+    						console.log(dis);
+   
     						var tooltipDiv = document.getElementById('tooltip');
     						tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br/>" + 
     						"Total Population: " + d.properties.TotPop + "<br/>";
-    						tooltipDiv.style.display = "block";
+    						tooltipDiv.style.display = "block";  
+
+    						var tooltipSel = document.getElementById('tooltipSelect');
+    						tooltipSel.innerHTML = d.properties.CNTRY_NAME + "<br/>" + 
+    						"Total Population: " + d.properties.TotPop + "<br/>"; 
+    						tooltipSel.style.display = "block"; 
+
     					}
     				})
     			
     				.on("click", function(d) {
+    					var dis = d3.select(this);
     					if (!lock) {
-	 						d3.select(this).style('stroke-width', '1px')
-	 							.style('fill-opacity', 1);
+	 						currentpath = dis.style('stroke-width', '1px')
+	 							.style('fill-opacity', 2);
 	 						console.log("item clicked");
 	 						lock = true;
 	 						var tooltipDiv = document.getElementById('tooltip');
-	 						tooltipDiv.style.display = "block";
+	 						tooltipDiv.style.display = "block"; 
+    						tooltipDiv.innerHTML = 
+    						"Selected Country: " + d.properties.CNTRY_NAME + "<br/>" + 
+    						"Total Population: " + d.properties.TotPop + "<br/>" +
+    						"GDP per Capita: " + d.properties.GDPpcap + "<br/>";
 	 					} else {
 	 						lock = false;
 	 					}
@@ -184,7 +211,6 @@
 							d3.select(this).style('stroke-width', '1px')
 	 							.style('fill-opacity', 1);
 	 						console.log("item clicked");
-	 						lock = true;
 	 						var tooltipDiv = document.getElementById('tooltip');
 	 						tooltipDiv.style.display = "block";
 						} else {
@@ -192,8 +218,11 @@
 	 								.style('fill-opacity', 1);
 	 						tooltip.style('visibility', 'hidden');
 	 					
-	 						 var tooltipDiv = document.getElementById('tooltip');
-	 		             	  tooltipDiv.style.display = "none";
+	 						var tooltipDiv = document.getElementById('tooltip');
+	 		             	tooltipDiv.style.display = "block";
+
+	 		             	var tooltipSel = document.getElementById('tooltipSelect');
+	 		             	tooltipSel.style.display = "none";
 						}
 	 				})
 			});

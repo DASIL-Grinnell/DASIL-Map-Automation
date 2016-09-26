@@ -120,6 +120,28 @@ path:hover {
 	left: 130px;
 	padding-left: 40px;
 	padding-right: 40px;
+	padding-bottom: 50px;
+	position: absolute;
+	text-align: left;
+	top: 240px;
+	width: 20%;
+	z-index: 10;
+	margin-top: 8%;
+	margin-right: 50%;
+	margin-left: -8%;
+	line-height: 350%;
+	font-family: "Source Sans Pro";
+	font-size: 110%;
+}
+
+#tooltipSelect {
+	background: #222; 
+	color: #464646;
+	display: block;
+	font-size: 12px;
+	left: 130px;
+	padding-left: 40px;
+	padding-right: 40px;
 	position: absolute;
 	text-align: left;
 	top: 95px;
@@ -131,7 +153,6 @@ path:hover {
 	line-height: 350%;
 	font-family: "Source Sans Pro";
 	font-size: 110%;
-	
 }
 
 svg {
