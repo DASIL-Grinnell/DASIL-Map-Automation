@@ -34,9 +34,12 @@
 		<!-- grab text from d3js and display them here -->
 		<br/>
 		<div id="tooltip"></div>
-		<div id="tooltipSelect"></div>
 	</div> <!--ninterative panel -->
 	<script id="map">
+	
+		var div = d3.select("body").append("div")
+			.attr("class", "tooltipTest")
+			.style("opacity", 0);
 	
 		d3.csv("filelist.csv", function(data) {
 			d3.select("#selectBar").selectAll("option")
@@ -70,10 +73,6 @@
 							.append('div')
 							.attr('class', 'tooltip');
 
-		var tooltipSelect = d3.select('text')
-								.append('div')
-								.attr('class', 'tooltipSelect');
-
 		var currentpath = "";
 	
 		var currentjson = "";
@@ -106,7 +105,7 @@
 			var map = d3.json(dataset, function (json) {
     			// create a first guess for the projection
     			var center = d3.geo.centroid(json);
-    			var scale = 140;
+    			var scale = 120;
     			var offset = [w / 2 + (margin.top*8), h / 2 + (margin.top*8)];
     			var projection = d3.geo.mercator().scale(scale).center(center)
         			.translate(offset);
@@ -140,18 +139,6 @@
 				for (var i = 0; i < json.features.length; i++) {
 	 				color[i] = colorScale(countryattr[i]);
 	 			}
-
-
-	 			//sets a quantized scale based on the automatically-calculated data range
-			var colorScale = d3.scale.quantize()
-						.range(['#ffffcc','#a1dab4',
-							'#41b6c4','#225ea8'])
-						.domain([d3.min(countryattr), d3.max(countryattr)]);
-				  
-			//links the data variable to the color scale
-			for (var i = 0; i < json.features.length; i++) {
-				color[i] = colorScale(countryattr[i]);
-			}
 			
 			var domainRange=d3.max(countryattr)-d3.min(countryattr);
 			var domainDiff=(d3.max(countryattr)-d3.min(countryattr))/4;
@@ -175,7 +162,7 @@
                      legend.append("rect")
                              .attr("x",20)	
                              .attr("y",function(d,i){
-							 return 10+i*40;
+							 return 270+i*40;
 							 })							 
 				             .attr("width",30)
 							 .attr("height",40)
@@ -185,7 +172,7 @@
 					 legend.append("text")
 					         .attr("x",60)
 							 .attr("y",function(d,i){
-							 return 35+i*40;
+							 return 295+i*40;
 							 })
 					         .text(function(d,i){
 							     return legendLabel[i];
@@ -210,16 +197,21 @@
 						}) //missing data is grey
 													
     				.on("mouseover", function(d) {
+    					var mouse = d3.mouse(svg.node()).map(function(d) { return parseInt(d); });
     					var dis = d3.select(this);
+    					console.log("left: " + mouse[0]);
+    					console.log("top: " + mouse[1]);
+    					div.transition()
+    						.duration(200)
+    						.style("opacity", .9);
+    					div.html(d.properties.CNTRY_NAME + "<br/>")
+    						.style("position", "absolute")
+    					    .style("left", (mouse[0] + 200) + "px")
+    					    .style("top", (mouse[1] + 100) + "px");
     					if (lock) {
     						d3.event.stopPropagation();
     						dis.style('stroke-width', '2px')
     							.style('fill-opacity', 2);
-    						console.log(dis);
-    						var tooltipSel = document.getElementById('tooltipSelect');
-    						tooltipSel.innerHTML = d.properties.CNTRY_NAME + "<br/>" + 
-    						"Total Population: " + d.properties.TotPop + "<br/>";
-    						tooltipSel.style.display = "block"; 
 
     					} else {
     						dis.style('stroke-width', '2px')
@@ -229,12 +221,7 @@
     						var tooltipDiv = document.getElementById('tooltip');
     						tooltipDiv.innerHTML = d.properties.CNTRY_NAME + "<br/>" + 
     						"Total Population: " + d.properties.TotPop + "<br/>";
-    						tooltipDiv.style.display = "block";  
-
-    						var tooltipSel = document.getElementById('tooltipSelect');
-    						tooltipSel.innerHTML = d.properties.CNTRY_NAME + "<br/>" + 
-    						"Total Population: " + d.properties.TotPop + "<br/>"; 
-    						tooltipSel.style.display = "block"; 
+    						tooltipDiv.style.display = "block";
 
     					}
     				})
@@ -254,6 +241,13 @@
 	 				})
 
 					.on("mouseout", function(d) {
+						div .transition()
+    						.duration(200)
+    						.style("opacity", .9);
+    					div .html(d.properties.CNTRY_NAME + "<br/>" + 
+    						"Total Population: " + d.properties.TotPop + "<br/>")
+    					    .style("left", (d3.event.pageX) + "px")
+    					    .style("top", (d3.event.pageY - 28) + "px"); 
 						if (lock) {
 							d3.select(this).style('stroke-width', '1px')
 	 							.style('fill-opacity', 1);
@@ -267,9 +261,6 @@
 	 					
 	 						var tooltipDiv = document.getElementById('tooltip');
 	 		             	tooltipDiv.style.display = "block";
-
-	 		             	var tooltipSel = document.getElementById('tooltipSelect');
-	 		             	tooltipSel.style.display = "none";
 						}
 	 				})
 			});

@@ -31,6 +31,10 @@
 	float: right;
 }
 
+g.legend {
+	margin-top: 40%;
+}
+
 #credit {
 	font-family: "Source Sans Pro";
 	color: #767676;
@@ -94,9 +98,8 @@ path:hover {
 }
 
 #option_menu {
-	margin-left:60px;
 	margin-top:40px;
-	width:400px;
+	width: 180%;
 	height:100px;
 }
 
@@ -106,7 +109,6 @@ path:hover {
 }
 
 #selectBarColor{
-	margin-left:60px;
 	margin-top:35px;
 }
 
@@ -143,25 +145,17 @@ path:hover {
 	font-size: 110%;
 }
 
-#tooltipSelect {
-	background: #eee; 
-	color: #464646;
-	display: block;
-	font-size: 12px;
-	left: 130px;
-	padding-left: 40px;
-	padding-right: 40px;
-	position: absolute;
-	text-align: left;
-	top: 125px;
-	width: 20%;
-	z-index: 10;
-	margin-top: 8%;
-	margin-right: 50%;
-	margin-left: -8%;
-	line-height: 350%;
-	font-family: "Source Sans Pro";
-	font-size: 110%;
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 60px;					
+    height: 28px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
 }
 
 svg {
